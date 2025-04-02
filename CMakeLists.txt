@@ -1,20 +1,150 @@
-cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.18)
+project(pi_webrtc)
 
-project(project LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 20)  # 设置这一项可以替代set(CMAKE_CXX_FLAGS "-std=c++20")
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS ON)
-set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_CXX_STANDARD 20)
+set(BUILD_TEST "" CACHE STRING "test")
 
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)  # 设置可执行文件的输出目录
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)	   # 设置库文件的输出目录
+string(TOLOWER "${CMAKE_BUILD_TYPE}" BUILD_TYPE_LOWER)
+if(NOT BUILD_TYPE_LOWER OR BUILD_TYPE_LOWER STREQUAL "debug")
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
+    add_compile_options(-g)
+    add_definitions(-DDEBUG_MODE)
+    find_library(PROFILER_LIB profiler)
+    if(PROFILER_LIB)
+        message(STATUS "Profiler library found: ${PROFILER_LIB}")
+        add_link_options(-lprofiler)
+    else()
+        message(STATUS "Profiler library not found")
+    endif()
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+endif()
 
-aux_source_directory(${PROJECT_SOURCE_DIR}/src DIR_SRC)
+set(WEBRTC_INCLUDE_DIR /usr/local/include/webrtc)
+set(WEBRTC_LIBRARY /usr/local/lib/libwebrtc.a)
+set(WEBRTC_LINK_LIBS dl)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
 
-# 设定头文件查找路径，可以将所有头文件路径都添加到这里面
-include_directories(${PROJECT_SOURCE_DIR}/include/
-                    ${PROJECT_SOURCE_DIR}/3rd/include)
-link_directories(${PROJECT_SOURCE_DIR}/3rd/lib)
+message(STATUS "BUILD_TEST: ${BUILD_TEST}")
+message(STATUS "WEBRTC_INCLUDE_DIR: ${WEBRTC_INCLUDE_DIR}")
+message(STATUS "WEBRTC_LIBRARY: ${WEBRTC_LIBRARY}")
 
-add_executable( project ${DIR_SRC} )
-target_link_libraries(project wiringPi hv)
+add_compile_definitions(
+    NDEBUG
+    WEBRTC_POSIX
+    WEBRTC_LINUX
+    WEBRTC_USE_H264
+    USE_CPPRESTSDK
+)
+
+add_compile_options(
+    -pipe
+    -fdeclspec
+)
+
+include_directories(
+    ./src
+    ${WEBRTC_INCLUDE_DIR}
+    ${WEBRTC_INCLUDE_DIR}/third_party/abseil-cpp
+    ${WEBRTC_INCLUDE_DIR}/third_party/libyuv/include
+    ${WEBRTC_INCLUDE_DIR}/tools/json_schema_compiler
+)
+
+if(BUILD_TEST STREQUAL "http_server")
+    add_executable(test_http_server test/test_http_server.cpp)
+elseif(BUILD_TEST STREQUAL "pulseaudio")
+    add_executable(test_pulseaudio test/test_pulseaudio.cpp)
+
+    target_link_libraries(test_pulseaudio
+        pulse-simple pulse
+    )
+elseif(BUILD_TEST STREQUAL "recorder")
+    add_subdirectory(src/common)
+    add_subdirectory(src/capturer)
+    add_subdirectory(src/recorder)
+    add_subdirectory(src/v4l2_codecs)
+    add_executable(test_recorder test/test_recorder.cpp)
+    target_link_libraries(test_recorder
+        capturer
+        recorder
+    )
+elseif(BUILD_TEST STREQUAL "mqtt")
+    add_subdirectory(src/signaling)
+    add_executable(test_mqtt test/test_mqtt.cpp)
+
+    target_link_libraries(test_mqtt
+        signaling
+    )
+    target_link_libraries(test_mqtt
+        Threads::Threads
+        ${MOSQUITTO_LIBS}
+    )
+elseif(BUILD_TEST STREQUAL "openh264")
+    add_executable(test_openh264 test/test_openh264.cpp)
+    target_link_libraries(test_openh264
+        ${WEBRTC_LINK_LIBS}
+        ${WEBRTC_LIBRARY}
+    )
+elseif(BUILD_TEST STREQUAL "v4l2_capturer")
+    add_subdirectory(src/capturer)
+    add_subdirectory(src/common)
+    add_subdirectory(src/v4l2_codecs)
+    add_executable(test_v4l2_capturer test/test_v4l2_capturer.cpp)
+    target_link_libraries(test_v4l2_capturer
+        capturer
+        v4l2_codecs
+    )
+elseif(BUILD_TEST STREQUAL "v4l2_encoder")
+    add_subdirectory(src/capturer)
+    add_subdirectory(src/common)
+    add_subdirectory(src/v4l2_codecs)
+    add_executable(test_v4l2_encoder test/test_v4l2_encoder.cpp)
+    target_link_libraries(test_v4l2_encoder
+        capturer
+        v4l2_codecs
+    )
+elseif(BUILD_TEST STREQUAL "v4l2_decoder")
+    add_subdirectory(src/capturer)
+    add_subdirectory(src/common)
+    add_subdirectory(src/v4l2_codecs)
+    add_executable(test_v4l2_decoder test/test_v4l2_decoder.cpp)
+    target_link_libraries(test_v4l2_decoder
+        capturer
+        v4l2_codecs
+    )
+elseif(BUILD_TEST STREQUAL "v4l2_scaler")
+    add_subdirectory(src/capturer)
+    add_subdirectory(src/common)
+    add_subdirectory(src/v4l2_codecs)
+    add_executable(test_v4l2_scaler test/test_v4l2_scaler.cpp)
+    target_link_libraries(test_v4l2_scaler
+        capturer
+        v4l2_codecs
+    )
+elseif(BUILD_TEST STREQUAL "libcamera")
+    add_subdirectory(src/capturer)
+    add_subdirectory(src/common)
+    add_executable(test_libcamera test/test_libcamera.cpp)
+    target_link_libraries(test_libcamera
+        capturer
+        common
+    )
+    target_link_libraries(test_libcamera
+        ${WEBRTC_LINK_LIBS}
+        Threads::Threads
+        ${WEBRTC_LIBRARY}
+    )
+else()
+    add_subdirectory(src)
+    add_executable(${PROJECT_NAME} src/main.cpp)
+    target_link_libraries(${PROJECT_NAME}
+        src
+    )
+    target_link_libraries(${PROJECT_NAME}
+        ${WEBRTC_LINK_LIBS}
+        boost_program_options
+        Threads::Threads
+        ${WEBRTC_LIBRARY}
+    )
+endif()
