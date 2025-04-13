@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Feeding System</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2ecc71;
+      --surface-color: #ffffff;
+      --background-color: #f8f9fa;
+      --text-primary: #2d3436;
+      --text-secondary: #636e72;
+      --success-color: #27ae60;
+      --warning-color: #e74c3c;
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --radius-lg: 12px;
+      --success-color: #27ae60;
+      /* 绿色 */
+      --warning-color: #e74c3c;
+      /* 红色 */
+    }
+
+    body {
+      margin: 0;
+      padding: 1.5rem;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--background-color);
+      color: var(--text-primary);
+    }
+
+    /* 主容器 */
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 1rem;
+      min-height: calc(100vh - 3rem);
+      /* 留出顶部间距 */
+    }
+
+    /* 视频区域 */
+    .video-container {
+      position: relative;
+      background: #000;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      aspect-ratio: unset;
+      margin-bottom: 3rem;
+      /* 增加底部间距 */
+      /* 移除固定宽高比 */
+      overflow: hidden;
+      max-height: 450px;
+      /* 高度从600px缩小 */
+      transition: transform 0.3s ease;
+    }
+
+    #videoElement {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 图表区域 */
+    .chart-container {
+      background: var(--surface-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 1.5rem;
+      margin-top: 3rem;
+      height: 400px;
+    }
+
+    /* 控制面板 */
+    .control-panel {
+      background: var(--surface-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    /* 状态指示器 */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .status-card {
+      padding: 0.5rem;
+      background: var(--background-color);
+      border-radius: 5px;
+      border-left: 4px solid var(--primary-color);
+      transition: transform 0.2s ease;
+    }
+
+    .status-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .status-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .status-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: rgba(46, 204, 113, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+    }
+
+    .status-title {
+      font-size: 0.925rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .status-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* 阈值输入 */
+    .threshold-input {
+      width: 100px;
+      padding: 0.5rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-weight: 500;
+      text-align: center;
+      transition: border-color 0.2s ease;
+    }
+
+    .threshold-input:focus {
+      border-color: var(--primary-color);
+      outline: none;
+    }
+
+    /* 按钮组 */
+    .button-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    .action-btn {
+      padding: 0.875rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    /* 模式指示器 */
+    .mode-indicator {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      background: rgba(46, 204, 113, 0.1);
+      color: var(--primary-color);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.3s ease;
+    }
+
+    .mode-indicator.remote-mode {
+      background: rgba(46, 204, 113, 0.1);
+      color: var(--primary-color);
+    }
+
+    .mode-indicator.auto-mode {
+      background: rgba(241, 196, 15, 0.1);
+      color: #f1c40f;
+    }
+
+    /* 响应式布局 */
+    @media (min-width: 1024px) {
+      .main-wrapper {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        align-items: start;
+      }
+
+      .video-container {
+        height: 450px;
+        /* 大屏幕高度调整 */
+      }
+
+      .chart-container {
+        margin-top: 3rem;
+        /* 保持间距一致 */
+        height: 320px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0.5rem;
+      }
+
+      .status-card {
+        padding: 1rem;
+      }
+
+      .action-btn {
+        font-size: 0.875rem;
+        padding: 0.75rem 1rem;
+      }
+
+      .video-container {
+        max-height: 300px;
+        /* 移动端高度调整 */
+        margin-bottom: 2rem;
+      }
+
+      .chart-container {
+        margin-top: 2rem;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.3);
+      }
+
+      70% {
+        box-shadow: 0 0 0 8px rgba(231, 76, 60, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+      }
+    }
+
+    /* 在现有样式表中添加 */
+    .status-indicator {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      position: relative;
+      margin-left: 8px;
+    }
+
+    .status-indicator::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    .indicator-green::after {
+      background: var(--success-color);
+    }
+
+    .indicator-red::after {
+      background: var(--warning-color);
+    }
+
+    /* 添加默认状态 */
+    .status-indicator {
+      /* 其他样式保持 */
+      background: #ddd;
+      /* 默认灰色 */
+    }
+
+    /* 覆盖默认状态 */
+    .indicator-green,
+    .indicator-red {
+      background: transparent;
+    }
+
+    .indicator-green::after {
+      animation: pulse 1.5s infinite;
+      background-color: var(--success-color);
+    }
+
+    .indicator-red::after {
+      animation: pulse 1.5s infinite;
+      background-color: var(--warning-color);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="modeIndicator" class="mode-indicator">
+    <i class="fas fa-satellite-dish"></i>
+    <span>Remote Mode</span>
+  </div>
+
+  <div class="container">
+    <div class="main-wrapper">
+      <!-- 左侧内容区 -->
+      <div class="content-area">
+        <div class="video-container">
+          <video id="videoElement" controls autoplay playsinline></video>
+        </div>
+        <div class="chart-container">
+          <div id="weightChart"></div>
+        </div>
+      </div>
+
+      <!-- 右侧控制面板 -->
+      <div class="control-panel">
+        <div class="status-grid">
+          <div class="status-card">
+            <div class="status-header">
+              <div class="status-icon">
+                <i class="fas fa-cogs"></i>
+              </div>
+              <div>
+                <div class="status-title">Working Mode</div>
+                <div class="status-value" id="modeStatus">Remote</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="status-card">
+            <div class="status-header">
+              <div class="status-icon">
+                <i class="fas fa-paw"></i>
+              </div>
+              <div>
+                <div class="status-title">Pet Detection</div>
+                <div class="status-value" id="animalStatus">Not Detected</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="status-card">
+            <div class="status-header">
+              <div class="status-icon">
+                <i class="fas fa-weight-hanging"></i>
+              </div>
+              <div>
+                <div class="status-title">Current Weight</div>
+                <div class="status-value">
+                  <span id="weightValue">0.00 g</span>
+                  <div id="weightIndicator" class="status-indicator indicator-red"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="status-card">
+            <div class="status-header">
+              <div class="status-icon">
+                <i class="fas fa-balance-scale"></i>
+              </div>
+              <div>
+                <div class="status-title">Weight Threshold</div>
+                <input type="number" id="weightThreshold" value="100" class="threshold-input">
+              </div>
+            </div>
+          </div>
+          <div class="status-card">
+            <div class="status-header">
+              <div class="status-icon">
+                <i class="fas fa-tint"></i>
+              </div>
+              <div>
+                <div class="status-title">Pump Status</div>
+                <div class="status-value" id="pumpStatus">Closed</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 新增舵机状态卡片 -->
+          <div class="status-card">
+            <div class="status-header">
+              <div class="status-icon">
+                <i class="fas fa-cog"></i>
+              </div>
+              <div>
+                <div class="status-title">Servo Status</div>
+                <div class="status-value" id="servoStatus">Closed</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button class="action-btn" onclick="start()">
+              <i class="fas fa-play"></i>
+              Start Stream
+            </button>
+            <button class="action-btn" onclick="stop()">
+              <i class="fas fa-stop"></i>
+              Stop Stream
+            </button>
+            <button class="action-btn" onclick="togglePump()">
+              <i class="fas fa-tint"></i>
+              Toggle Pump
+            </button>
+            <button class="action-btn" onclick="toggleServo()">
+              <i class="fas fa-cogs"></i>
+              Toggle Servo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="mqtt.min.js"></script>
+  <script src="echarts.min.js"></script>
+  <script type="module">
+    import { PiCamera } from './picamera.esm.js';
+    const deviceUid = '0e15dd52-deb4-4f00-a771-a688fc421871';
+    const mqttHost = 't09d1d6f.ala.cn-hangzhou.emqxsl.cn';
+    const mqttPath = '/mqtt';
+    const mqttPort = parseInt('8084');
+    const mqttUsername = 'test';
+    const mqttPassword = 'test1234';
+    const MQTT_CLIENTID = 'WebAppPet'
+
+    const MQTT_SUB_TOPIC = '/Pet/update'
+    const MQTT_PUB_TOPIC = '/Pet/post'
+    const MQTT_OPTIONS = {
+      connectTimeout: 5000,
+      clientId: MQTT_CLIENTID,
+      username: mqttUsername,
+      password: mqttPassword,
+      keepalive: 60,
+      cleanSession: true,
+      clean: true,
+    }
+    // MQTT连接配置
+    const client = mqtt.connect('wss://' + mqttHost + ':' + mqttPort + mqttPath, MQTT_OPTIONS);
+    // 视频流控制
+    let videoRef = document.getElementById('videoElement');
+    let conn = null;
+
+    window.start = async function () {
+      try {
+        // 取得使用者輸入的連線參數
+        // 初始化 PiCamera 連線
+        conn = new PiCamera({
+          deviceUid: deviceUid,
+          mqttHost: mqttHost,
+          mqttPath: mqttPath,
+          mqttPort: mqttPort,
+          mqttUsername: mqttUsername,
+          mqttPassword: mqttPassword,
+          // stunUrls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
+        });
+        conn.attach(videoRef);
+        conn.connect();
+      } catch (err) {
+        console.error('获取视频流失败:', err);
+      }
+    }
+
+    window.stop = function () {
+      if (conn) {
+        conn.terminate();
+      }
+    }
+
+    // 设备控制函数
+    window.togglePump = function () {
+      console.log("togglePump:", JSON.stringify({ state: document.getElementById('pumpStatus').textContent === '关闭' ? 1 : 0 }));
+      client.publish(MQTT_PUB_TOPIC, JSON.stringify({
+        mode: 1,
+        state: document.getElementById('pumpStatus').textContent === 'Closed' ? 1 : 0
+      }));
+    }
+
+    window.toggleServo = function () {
+      console.log("toggleServo:", JSON.stringify({ angle: document.getElementById('servoStatus').textContent === 'Closed' ? 1 : 0 }));
+      client.publish(MQTT_PUB_TOPIC, JSON.stringify({
+        mode: 2,
+        state: document.getElementById('servoStatus').textContent === 'Closed' ? 1 : 0
+      }));
+    }
+
+    if (typeof echarts === 'undefined') {
+      console.error('ECharts 未正确加载，请检查脚本路径');
+    }
+    // 实时重量图表实例
+    let weightChart = null;
+    // 存储最多20个数据点
+    let weightHistory = [];
+    const MAX_DATA_POINTS = 20;
+
+    // 初始化图表
+    // 强化初始化函数
+    const initWeightChart = () => {
+      try {
+        const chartDom = document.getElementById('weightChart');
+        if (!chartDom) throw new Error('图表容器未找到');
+
+        // 显式设置容器尺寸
+        chartDom.style.width = '100%';
+        chartDom.style.height = '400px';
+
+        // 初始化图表
+        weightChart = echarts.init(chartDom);
+
+        const option = {
+          title: {
+            text: '实时重量监测',
+            left: 'center',
+            textStyle: {
+              color: 'var(--text-primary)'
+            }
+          },
+          tooltip: {
+            trigger: 'axis',
+            formatter: params => {
+              const date = new Date(params[0].value[0]);
+              return `${date.toLocaleTimeString()}<br/>重量: ${params[0].value[1]}g`;
+            }
+          },
+          xAxis: {
+            type: 'time',
+            boundaryGap: false,
+            axisLabel: {
+              formatter: value => new Date(value).toLocaleTimeString()
+            }
+          },
+          yAxis: {
+            type: 'value',
+            name: '重量 (g)',
+            min: 0,
+            max: 500
+          },
+          series: [{
+            name: '重量',
+            type: 'line',
+            showSymbol: false,
+            smooth: true,
+            data: weightHistory,
+            lineStyle: {
+              color: 'var(--primary-color)'
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: 'rgba(46, 204, 113, 0.3)' },
+                { offset: 1, color: 'rgba(46, 204, 113, 0)' }
+              ])
+            }
+          }],
+          grid: {
+            left: '5%',
+            right: '5%',
+            bottom: '15%'
+          }
+        };
+
+        weightChart.setOption(option);
+        window.addEventListener('resize', () => weightChart.resize());
+
+      } catch (error) {
+        console.error('图表初始化失败:', error);
+      }
+    };
+
+    // 更新图表数据
+    // 安全更新函数
+    const updateWeightChart = (weight) => {
+      try {
+        if (!weightChart) {
+          setTimeout(() => updateWeightChart(weight), 50);
+          return;
+        }
+
+        const timestamp = Date.now();
+        weightHistory.push([timestamp, weight]);
+
+        if (weightHistory.length > MAX_DATA_POINTS) {
+          weightHistory = weightHistory.slice(-MAX_DATA_POINTS);
+        }
+
+        weightChart.setOption({
+          series: [{
+            data: weightHistory
+          }]
+        });
+
+      } catch (error) {
+        console.error('图表更新失败:', error);
+      }
+    };
+
+    // 初始化时序控制
+    const initChart = () => {
+      if (document.readyState === 'complete') {
+        initWeightChart();
+      } else {
+        document.addEventListener('DOMContentLoaded', initWeightChart);
+        window.addEventListener('load', initWeightChart);
+      }
+    };
+    initChart();
+    // MQTT消息处理
+    client.on('message', function (topic, message) {
+      try {
+        const data = JSON.parse(message.toString());
+        console.log("data:", data);
+        //刷新DOM页面
+
+        // 处理模式状态
+        if (data.mode) {
+          const modeElement = document.getElementById('modeStatus');
+          const indicator = document.getElementById('modeIndicator');
+          if (data.mode === 'Remote') {
+            modeElement.innerText = 'Remote Mode';
+            indicator.innerText = 'Remote Mode';
+            indicator.classList.add('remote-mode');
+          } else {
+            modeElement.innerText = 'Auto Mode';
+            indicator.innerText = 'Auto Mode';
+            indicator.classList.remove('auto-mode');
+          }
+        }
+
+        // 处理动物检测
+        if (data.detection == 1) {
+          document.getElementById('animalStatus').innerText = 'Animal Detected';
+        }
+        else {
+          document.getElementById('animalStatus').innerText = 'None';
+        }
+        // 处理重量数据
+        if (data.weight > 0) {
+          const weightElement = document.getElementById('weightValue');
+          const indicator = document.getElementById('weightIndicator');
+          const threshold = parseInt(document.getElementById('weightThreshold').value);
+          weightElement.innerText = data.weight.toFixed(2) + ' g';
+
+          // 更新指示灯状态
+          indicator.className = 'status-indicator ' +
+            (data.weight < threshold ? 'indicator-red' : 'indicator-green');
+
+          requestAnimationFrame(() => updateWeightChart(data.weight));
+        }
+
+        // 处理水泵状态
+        if (data.pump !== undefined) {
+          document.getElementById('pumpStatus').innerText =
+            (data.pump == 1) ? 'Running' : 'Closed';
+        }
+
+        // 处理舵机状态
+        if (data.servo !== undefined) {
+          document.getElementById('servoStatus').innerText =
+            (data.servo == 1) ? 'Open' : 'Closed';
+        }
+
+      } catch (e) {
+        console.error('Message processing error:', e);
+      }
+    });
+
+    // MQTT连接事件
+    client.on('connect', () => {
+      console.log('MQTT connected successfully');
+      client.subscribe(MQTT_SUB_TOPIC);
+    });
+
+    client.on('error', (err) => {
+      console.error('MQTT connection error:', err);
+    });
+  </script>
+</body>
+
+</html>
