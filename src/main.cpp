@@ -4,17 +4,6 @@
  * @brief     Main control program for the Smart Pet Feeder system
  * @version   1.0
  * @details
- * This file serves as the entry point of the Smart Pet Feeder project,
- * designed to run on a Raspberry Pi. It performs the following tasks:
- * 1. Initializes GPIO for infrared sensor, water pump, and servo motor
- * 2. Reads pet food/water weight via the HX711 module
- * 3. Detects pet presence using infrared
- * 4. Communicates with external modules via serial port
- * 5. Connects to MQTT for remote control and cloud updates
- * 6. Supports both automatic and manual operation modes
- * 
- * The system uses multithreading to handle hardware interaction,
- * serial communication, and MQTT messaging concurrently.
  ***************************************************************/#include <iostream>
 
 #include "args.h"
