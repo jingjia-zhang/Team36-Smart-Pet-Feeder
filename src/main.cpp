@@ -1,11 +1,3 @@
-/***************************************************************
- * @file      main.cpp
- * @author    Minghao Jiang
- * @brief     Main control program for the Smart Pet Feeder system
- * @version   1.0
- * @details
- ***************************************************************/#include <iostream>
-
 #include "args.h"
 #include "common/logging.h"
 #include "common/utils.h"
