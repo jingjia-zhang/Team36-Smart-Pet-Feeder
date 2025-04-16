@@ -42,7 +42,7 @@ Document Introduction
 
 Please watch our demonstration video here: https://www.instagram.com/zhj_001108?igsh=eDBwM3BmcXl2MnZz 
 
-[ins picture]
+![ins image] https://github.com/jmh1406170116/images/blob/main/insgram.jpg?raw=true
 
 ### 2.**The Project Introduction** 
 
