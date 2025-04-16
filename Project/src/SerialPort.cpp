@@ -3,11 +3,12 @@
 #include <unistd.h>
 #include <wiringPi.h>
 
+// Constructor: setup wiringPi and store config
 SerialPort::SerialPort(const Config& config) : config_(config)
 {
     if (wiringPiSetup() == -1)
     {
-        throw std::runtime_error("WiringPi初始化失败");
+        throw std::runtime_error("WiringPi initialization failed");
     }
 }
 
@@ -16,12 +17,14 @@ SerialPort::~SerialPort()
     close();
 }
 
+// Destructor: close port if open
 SerialPort& SerialPort::getInstance()
 {
     static SerialPort port;
     return port;
 }
 
+// Open the serial port
 bool SerialPort::open()
 {
     if (is_open_)
@@ -34,10 +37,10 @@ bool SerialPort::open()
         return false;
     }
 
-    // 设置超时参数
+    // Set timeout attributes
     struct termios options;
     tcgetattr(fd_, &options);
-    options.c_cc[VTIME] = config_.timeout_ms / 100; // 单位：100ms
+    options.c_cc[VTIME] = config_.timeout_ms / 100; // timeout in 100ms units
     options.c_cc[VMIN] = 0;
     tcsetattr(fd_, TCSANOW, &options);
 
@@ -45,6 +48,7 @@ bool SerialPort::open()
     return true;
 }
 
+// Close serial port
 void SerialPort::close()
 {
     if (is_open_)
@@ -55,11 +59,13 @@ void SerialPort::close()
     }
 }
 
+// Check if port is open
 bool SerialPort::isOpen() const
 {
     return is_open_;
 }
 
+// Send text data
 ssize_t SerialPort::send(const std::string& data)
 {
     if (!is_open_)
@@ -67,6 +73,7 @@ ssize_t SerialPort::send(const std::string& data)
     return write(fd_, data.c_str(), data.size());
 }
 
+// Send binary data
 ssize_t SerialPort::send(const uint8_t* data, size_t length)
 {
     if (!is_open_)
@@ -74,6 +81,7 @@ ssize_t SerialPort::send(const uint8_t* data, size_t length)
     return write(fd_, data, length);
 }
 
+// Receive data as string with timeout
 std::string SerialPort::receive()
 {
     std::string buffer;
@@ -93,11 +101,12 @@ std::string SerialPort::receive()
                 break;
             }
         }
-        usleep(10000); // 10ms间隔
+        usleep(10000); // 10ms delay
     }
     return buffer;
 }
 
+// Receive binary data
 ssize_t SerialPort::receive(uint8_t* buffer, size_t max_length)
 {
     if (!is_open_)
@@ -116,29 +125,33 @@ ssize_t SerialPort::receive(uint8_t* buffer, size_t max_length)
         }
         else
         {
-            usleep(10000); // 10ms间隔
+            usleep(10000); // wait 10ms
         }
     }
     return static_cast<ssize_t>(received);
 }
 
+// Clear input buffer
 void SerialPort::flushInput()
 {
     if (is_open_)
         serialFlush(fd_);
 }
 
+// Clear output buffer
 void SerialPort::flushOutput()
 {
     if (is_open_)
         serialFlush(fd_);
 }
 
+// Get number of available bytes
 size_t SerialPort::available() const
 {
     return is_open_ ? serialDataAvail(fd_) : 0;
 }
 
+// Reconfigure port settings
 void SerialPort::reconfigure(const Config& new_config)
 {
     if (is_open_)
@@ -153,6 +166,7 @@ void SerialPort::reconfigure(const Config& new_config)
     }
 }
 
+// Return current config
 SerialPort::Config SerialPort::getConfiguration() const
 {
     return config_;
@@ -164,39 +178,39 @@ SerialPort::Config SerialPort::getConfiguration() const
 
 // int main() {
 //     try {
-//         // 配置串口参数
+//         // Step 1: Define the serial port configuration
 //         SerialPort::Config config;
-//         config.device = "/dev/ttyAMA0";
-//         config.baudrate = 115200;
-//         config.timeout_ms = 2000;
+//         config.device = "/dev/ttyAMA0";// Serial port device (adjust for your hardware)
+//         config.baudrate = 115200;// Communication speed
+//         config.timeout_ms = 2000;// Timeout in milliseconds
 
-//         // 创建串口对象
+//         // Step 2: Create a SerialPort object with the config
 //         SerialPort uart(config);
 
-//         // 打开端口
+//         // Step 3: Open the serial port
 //         if (!uart.open()) {
-//             std::cerr << "无法打开串口！" << std::endl;
+//             std::cerr << "Failed to open serial port!" << std::endl;
 //             return 1;
 //         }
 
-//         // 发送数据
+//         // Step 4: Send a plain text message
 //         std::string message = "Hello from class!\n";
 //         uart.send(message);
 
-//         // 接收数据
+//         // Step 5: Wait and read response from the serial port
 //         std::string response = uart.receive();
 //         if (!response.empty()) {
-//             std::cout << "收到响应: " << response << std::endl;
+//             std::cout << "Received response: " << response << std::endl;
 //         } else {
-//             std::cout << "接收超时" << std::endl;
+//             std::cout << "Receive timeout or no data" << std::endl;
 //         }
 
-//         // 二进制数据传输示例
+//         // Step 6: Send a binary message (example payload)
 //         uint8_t binary_data[] = {0xAA, 0x55, 0x01};
 //         uart.send(binary_data, sizeof(binary_data));
 
 //     } catch (const std::exception& e) {
-//         std::cerr << "错误发生: " << e.what() << std::endl;
+//         std::cerr << "An error occurred: " << e.what() << std::endl;
 //         return 1;
 //     }
 
