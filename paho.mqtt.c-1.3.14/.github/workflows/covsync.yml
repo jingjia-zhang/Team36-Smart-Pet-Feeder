@@ -1,0 +1,24 @@
+# ============================================
+# GitHub Actions Workflow File
+# This workflow synchronizes the Coverity Scan branch (coverity-develop) with origin/develop
+# Triggered manually or on a weekly schedule (every Sunday at 03:07 UTC)
+# ============================================
+
+name: "Synchronise Coverity Scan branches on a weekly basis"  # Display name of the workflow
+
+on:
+  workflow_dispatch:  # Allows manual trigger from GitHub Actions UI
+  schedule:
+    - cron: "7 3 * * 0"  # Runs automatically every Sunday at 03:07 UTC
+
+jobs:
+  build:  # Use the latest Ubuntu GitHub-hosted runner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - run: |
+          git checkout -b coverity-develop origin/develop
+          git pull origin coverity-develop	
+          git push origin coverity-develop
