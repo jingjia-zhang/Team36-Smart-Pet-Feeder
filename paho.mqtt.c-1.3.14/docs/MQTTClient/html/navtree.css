@@ -1,0 +1,189 @@
+/* 
+ * navtree.css – Styling for the Doxygen navigation tree.
+ * 
+ * This stylesheet defines the layout and appearance of the left-hand navigation
+ * tree in Doxygen-generated documentation. It includes styles for collapsible
+ * items, hover and active states, scrollbar behavior, resizable sidebar, and
+ * print-specific rules. It uses CSS variables for easy theming.
+ */
+
+/* Controls padding/margin for nested child <ul> in tree */
+#nav-tree .children_ul {
+  margin: 0;
+  padding: 4px;
+}
+
+/* Removes default bullet style and spacing for all lists */
+#nav-tree ul {
+  list-style: none outside none;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Prevents line wrapping and spacing for <li> elements */
+#nav-tree li {
+  white-space: nowrap;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* No margin for expand/collapse plus icon */
+#nav-tree .plus {
+  margin: 0px;
+}
+
+/* Highlight for selected item in nav tree */
+#nav-tree .selected {
+  background-image: url('tab_a.png');
+  background-repeat: repeat-x;
+  color: var(--nav-text-active-color);
+  text-shadow: var(--nav-text-active-shadow);
+}
+
+/* Arrow icon color for selected item */
+#nav-tree .selected .arrow {
+  color: var(--nav-arrow-selected-color);
+  text-shadow: none;
+}
+
+/* Basic image styling inside nav tree */
+#nav-tree img {
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  vertical-align: middle;
+}
+
+/* Remove underline and spacing for links */
+#nav-tree a {
+  text-decoration: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+/* Label (text next to icon) style */
+#nav-tree .label {
+  margin: 0px;
+  padding: 0px;
+  font: 12px var(--font-family-nav);
+}
+
+/* Padding inside clickable label area */
+#nav-tree .label a {
+  padding: 2px;
+}
+
+/* Active link color in selected item */
+#nav-tree .selected a {
+  text-decoration: none;
+  color: var(--nav-text-active-color);
+}
+
+/* Redundant: ensures no padding/margin in child UL */
+#nav-tree .children_ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Wrapper for each nav tree item */
+#nav-tree .item {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Main nav tree container: font and scroll */
+#nav-tree {
+  padding: 0px 0px;
+  font-size: 14px;
+  overflow: auto;
+}
+
+/* Main documentation area content (right side) */
+#doc-content {
+  overflow: auto;
+  display: block;
+  padding: 0px;
+  margin: 0px;
+  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+}
+
+/* Left sidebar container */
+#side-nav {
+  padding: 0 6px 0 0;
+  margin: 0px;
+  display: block;
+  position: absolute;
+  left: 0px;
+  width: $width; /* replaced by preprocessor or template engine */
+  overflow: hidden;
+}
+
+/* Required by jQuery UI for resizable behavior */
+.ui-resizable .ui-resizable-handle {
+  display: block;
+}
+
+/* Draggable vertical resize bar styling */
+.ui-resizable-e {
+  background-image: var(--nav-splitbar-image);
+  background-size: 100%;
+  background-repeat: repeat-y;
+  background-attachment: scroll;
+  cursor: ew-resize;
+  height: 100%;
+  right: 0;
+  top: 0;
+  width: 6px;
+}
+
+/* Hidden but required handle for resizing */
+.ui-resizable-handle {
+  display: none;
+  font-size: 0.1px;
+  position: absolute;
+  z-index: 1;
+}
+
+/* Adds spacing between top of nav and its content */
+#nav-tree-contents {
+  margin: 6px 0px 0px 0px;
+}
+
+/* Nav tree background and iOS scrolling support */
+#nav-tree {
+  background-repeat: repeat-x;
+  background-color: var(--nav-background-color);
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Sync icon (top right of nav) positioning */
+#nav-sync {
+  position: absolute;
+  top: 5px;
+  right: 24px;
+  z-index: 0;
+}
+
+/* Default sync icon opacity (faded) */
+#nav-sync img {
+  opacity: 0.3;
+}
+
+/* On hover: sync icon becomes more visible */
+#nav-sync img:hover {
+  opacity: 0.9;
+}
+
+/* Print-specific rules: hide nav tree and resize handle */
+@media print {
+  #nav-tree {
+    display: none;
+  }
+
+  div.ui-resizable-handle {
+    display: none;
+    position: relative;
+  }
+}
+
+
