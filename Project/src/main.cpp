@@ -12,23 +12,29 @@
 #include <iostream>
 
 #include <thread>
-#define INFRA_RED_PIN 3
-#define WATER_PUMP_PIN 25
-#define SERVO_PIN 0
+#define INFRA_RED_PIN 3      // IR sensor GPIO pin
+#define WATER_PUMP_PIN 25    // Water pump control pin
+#define SERVO_PIN 0          // Servo motor pin
 
 int infrared_status = 0;
 int servo_status = 0, water_pump_status = LOW;
-int mode = 1;
+int mode = 1;// 0 = auto, 1 = remote
 float weights = 0;
-float weights_threshold = 10;
+float weights_threshold = 10;// threshold weight to decide food/water
 int servo_flag = 0;
+
+// Singleton serial port instance
 SerialPort& serial_port = SerialPort::getInstance();
+
+// MQTT related config
 static std::string mSubscribeToptic = "/Pet/post";
 static std::string mPublishTopic = "/Pet/update";
 static std::string mUserName = "test";
 static std::string mPassWord = "test1234";
 static std::string mServerUrl = "mqtts://t09d1d6f.ala.cn-hangzhou.emqxsl.cn:8883";
 static std::string mClientId = "Pi5Pet";
+
+// Initialize GPIOs
 void gpioInit(void)
 {
     if (wiringPiSetup() < 0)
@@ -36,11 +42,12 @@ void gpioInit(void)
     pinMode(INFRA_RED_PIN, INPUT);
     pinMode(WATER_PUMP_PIN, OUTPUT);
     pinMode(SERVO_PIN, OUTPUT);
-    softPwmCreate(SERVO_PIN, 0, 200);// 设置周期分为200步
+    softPwmCreate(SERVO_PIN, 0, 200);// PWM period = 200
     pullUpDnControl(INFRA_RED_PIN, PUD_DOWN);
     pullUpDnControl(WATER_PUMP_PIN, PUD_DOWN);
 }
 
+// Set servo motor angle (0 or 1 = different PWM duty cycles)
 void setServoAngle(int angle)
 {
     softPwmWrite(SERVO_PIN, 0);
@@ -76,6 +83,7 @@ void closeWaterPump(void)
     digitalWrite(WATER_PUMP_PIN, LOW);
 }
 
+// Utility: split string by space
 std::vector<std::string> splitString(const std::string& s)
 {
     std::vector<std::string> tokens;
@@ -98,6 +106,7 @@ int main(void)
 
     gpioInit();
 
+    // Init weight sensor (DOUT, SCK, gain, offset, rate)
     HX711::AdvancedHX711 hx(5, 6, 419, 233775, HX711::Rate::HZ_80);
 
 
@@ -105,6 +114,8 @@ int main(void)
     {
         serial_port.open();
     }
+
+    // Serial thread: reads commands and updates states
     std::thread threadSeral([&]() {
         while (!isExit)
         {
@@ -132,12 +143,14 @@ int main(void)
             delay(100);
         }}
     );
+
+    // Automatic mode thread: logic for auto control
     std::thread threadAutoMode([&]() {
         while (!isExit)
         {
             if (mode == 0)
             {
-                if (infrared_status == LOW) //has pet
+                if (infrared_status == LOW) // Pet detected
                 {
                     if (weights < weights_threshold)
                     {
@@ -162,6 +175,8 @@ int main(void)
             delay(100);
         }}
     );
+
+    // MQTT communication thread
     std::thread threadMqtt(
         [&]() {
             auto& mqtt = MQTTClientWrapper::getInstance();
@@ -225,6 +240,8 @@ int main(void)
             mqtt.disconnect();
         }
     );
+
+    // Main loop: read sensors and update servo
     while (1)
     {
         infrared_status = digitalRead(INFRA_RED_PIN);
@@ -254,33 +271,43 @@ int main(void)
 int main(void)
 {
     printf("wiringPi-C PWM test program\n");
-    // 初始化
+    
+    // Initialize WiringPi
     wiringPiSetup();
     pinMode(PWM_PIN, OUTPUT);
-    softPwmCreate(PWM_PIN, 0, 200);// 设置周期分为200步
-    printf("当前方向: -90度\n");
+    softPwmCreate(PWM_PIN, 0, 200);// Create software PWM with 200 steps per period
+
+    // Move servo motor through several predefined angles
+    printf("Current direction: -90 degrees\n");
     softPwmWrite(PWM_PIN, 5);
     delay(1000);
-    printf("当前方向: -45度\n");
+    
+    printf("Current direction: -45 degrees\n");
     softPwmWrite(PWM_PIN, 10);
     delay(1000);
-    printf("当前方向: 0度\n");
+    
+    printf("Current direction: 0 degrees\n");
     softPwmWrite(PWM_PIN, 15);
     delay(1000);
-    printf("当前方向: 45度\n");
+    
+    printf("Current direction: 45 degrees\n");
     softPwmWrite(PWM_PIN, 20);
     delay(1000);
-    printf("当前方向: 90度\n");
+    
+    printf("Current direction: 90 degrees\n");
     softPwmWrite(PWM_PIN, 25);
     delay(1000);
+
+    // Loop for continuous clockwise and counter-clockwise motion
     int i = 0;
     while (1) {
-        printf("顺时针\n");
+        printf("Clockwise rotation\n");
         for (i = 25; i >= 5; i--) {
             softPwmWrite(PWM_PIN, i);
             delay(20);
         }
-        printf("逆时针\n");
+        
+        printf("Counter-clockwise rotation\n");
         for (i = 5; i <= 25; i++) {
             softPwmWrite(PWM_PIN, i);
             delay(20);
