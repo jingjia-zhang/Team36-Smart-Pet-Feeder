@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/Sha1TestOpenSSL.dir/SHA1.c.o -o Sha1TestOpenSSL  /usr/lib/aarch64-linux-gnu/libssl.so /usr/lib/aarch64-linux-gnu/libcrypto.so 
