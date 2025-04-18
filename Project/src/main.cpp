@@ -12,15 +12,15 @@
 #include <iostream>
 
 #include <thread>
-#define INFRA_RED_PIN 3      // IR sensor GPIO pin
-#define WATER_PUMP_PIN 25    // Water pump control pin
-#define SERVO_PIN 0          // Servo motor pin
+#define INFRA_RED_PIN 3        // IR sensor GPIO pin
+#define WATER_PUMP_PIN 25      // Water pump control pin
+#define SERVO_PIN 0            // Servo motor pin
 
 int infrared_status = 0;
 int servo_status = 0, water_pump_status = LOW;
-int mode = 1;// 0 = auto, 1 = remote
+int mode = 1;
 float weights = 0;
-float weights_threshold = 10;// threshold weight to decide food/water
+float weights_threshold = 10;// If weight < this, feed or water the pet
 int servo_flag = 0;
 
 // Singleton serial port instance
@@ -31,7 +31,7 @@ static std::string mSubscribeToptic = "/Pet/post";
 static std::string mPublishTopic = "/Pet/update";
 static std::string mUserName = "test";
 static std::string mPassWord = "test1234";
-static std::string mServerUrl = "mqtts://t09d1d6f.ala.cn-hangzhou.emqxsl.cn:8883";
+static std::string mServerUrl = "mqtts://qfe6debf.ala.eu-central-1.emqxsl.com:8883";
 static std::string mClientId = "Pi5Pet";
 
 // Initialize GPIOs
@@ -42,7 +42,7 @@ void gpioInit(void)
     pinMode(INFRA_RED_PIN, INPUT);
     pinMode(WATER_PUMP_PIN, OUTPUT);
     pinMode(SERVO_PIN, OUTPUT);
-    softPwmCreate(SERVO_PIN, 0, 200);// PWM period = 200
+    softPwmCreate(SERVO_PIN, 0, 200);// Set the cycle to 200 steps
     pullUpDnControl(INFRA_RED_PIN, PUD_DOWN);
     pullUpDnControl(WATER_PUMP_PIN, PUD_DOWN);
 }
@@ -271,29 +271,28 @@ int main(void)
 int main(void)
 {
     printf("wiringPi-C PWM test program\n");
-    
-    // Initialize WiringPi
+    // Initialization
     wiringPiSetup();
     pinMode(PWM_PIN, OUTPUT);
     softPwmCreate(PWM_PIN, 0, 200);// Create software PWM with 200 steps per period
-
+    
     // Move servo motor through several predefined angles
     printf("Current direction: -90 degrees\n");
     softPwmWrite(PWM_PIN, 5);
     delay(1000);
-    
+
     printf("Current direction: -45 degrees\n");
     softPwmWrite(PWM_PIN, 10);
     delay(1000);
-    
+
     printf("Current direction: 0 degrees\n");
     softPwmWrite(PWM_PIN, 15);
     delay(1000);
-    
+
     printf("Current direction: 45 degrees\n");
     softPwmWrite(PWM_PIN, 20);
     delay(1000);
-    
+
     printf("Current direction: 90 degrees\n");
     softPwmWrite(PWM_PIN, 25);
     delay(1000);
