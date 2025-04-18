@@ -6,23 +6,23 @@
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Feeding System</title>
-  
+
   <!-- Import Font Awesome icon library -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
+  
   <!-- Inline CSS styles -->
   <style>
     /* Define CSS variables for centralized color, shadow, and border radius management */
     :root {
-      --primary-color: #2ecc71;         /* Main color: green */
-      --surface-color: #ffffff;         /* Surface color: white */
+      --primary-color: #2ecc71;           /* Main color: green */
+      --surface-color: #ffffff;           /* Surface color: white */
       --background-color: #f8f9fa;        /* Background color */
-      --text-primary: #2d3436;          /* Primary text color */
-      --text-secondary: #636e72;        /* Secondary text color */
-      --success-color: #27ae60;         /* Success state color */
-      --warning-color: #e74c3c;         /* Warning state color */
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);  /* Medium shadow */
-      --radius-lg: 12px;                /* Large border radius */
+      --text-primary: #2d3436;            /* Primary text color */
+      --text-secondary: #636e72;          /* Secondary text color */
+      --success-color: #27ae60;           /* Success state color */
+      --warning-color: #e74c3c;           /* Warning state color */
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);     /* Medium shadow */
+      --radius-lg: 12px;                    /* Large border radius */
       /* Duplicate declarations (could be optimized to avoid repetition) */
       --success-color: #27ae60;
       --warning-color: #e74c3c;
@@ -42,20 +42,20 @@
       max-width: 1440px;
       margin: 0 auto;
       padding: 1rem;
-      min-height: calc(100vh - 3rem); /* Adjust for top spacing */
+      min-height: calc(100vh - 3rem);      /* Adjust for top spacing */
     }
 
     /* Styles for the video container area */
     .video-container {
       position: relative;
-      background: #000;  /* Black background */
+      background: #000;      /* Black background */
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-md);
       aspect-ratio: unset;
-      margin-bottom: 3rem;  /* Spacing below the container */
+      margin-bottom: 3rem;     /* Spacing below the container */
       overflow: hidden;
-      max-height: 450px;    /* Limit the maximum height */
-      transition: transform 0.3s ease;  /* Smooth transform transition */
+      max-height: 450px;       /* Limit the maximum height */
+      transition: transform 0.3s ease;       /* Smooth transform transition */
     }
 
     /* Make the video element fill the container */
@@ -211,6 +211,7 @@
       background: rgba(46, 204, 113, 0.1);
       color: var(--primary-color);
     }
+
     .mode-indicator.auto-mode {
       background: rgba(241, 196, 15, 0.1);
       color: #f1c40f;
@@ -224,11 +225,15 @@
         gap: 2rem;
         align-items: start;
       }
+
       .video-container {
         height: 450px;
+        /* Large screen height adjustment */
       }
+
       .chart-container {
         margin-top: 3rem;
+        /* Keep the spacing consistent */
         height: 320px;
       }
     }
@@ -238,17 +243,22 @@
       .container {
         padding: 0.5rem;
       }
+
       .status-card {
         padding: 1rem;
       }
+
       .action-btn {
         font-size: 0.875rem;
         padding: 0.75rem 1rem;
       }
+
       .video-container {
         max-height: 300px;
+        /* Mobile terminal height adjustment */
         margin-bottom: 2rem;
       }
+
       .chart-container {
         margin-top: 2rem;
       }
@@ -259,9 +269,11 @@
       0% {
         box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.3);
       }
+
       70% {
         box-shadow: 0 0 0 8px rgba(231, 76, 60, 0);
       }
+
       100% {
         box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
       }
@@ -274,16 +286,9 @@
       border-radius: 50%;
       position: relative;
       margin-left: 8px;
-      background: #ddd;  /* Default: grey */
     }
 
-    /* Modify styles for green and red indicators */
-    .indicator-green,
-    .indicator-red {
-      background: transparent;
-    }
-
-    .indicator-green::after {
+    .status-indicator::after {
       content: "";
       position: absolute;
       top: 0;
@@ -292,17 +297,35 @@
       height: 100%;
       border-radius: 50%;
       animation: pulse 1.5s infinite;
+    }
+
+    .indicator-green::after {
+      background: var(--success-color);
+    }
+
+    .indicator-red::after {
+      background: var(--warning-color);
+    }
+
+    /* Add default state */
+    .status-indicator {
+      /* Other styles remain */
+      background: #ddd;
+      /* Default gray */
+    }
+
+    /* Override default state */
+    .indicator-green,
+    .indicator-red {
+      background: transparent;
+    }
+
+    .indicator-green::after {
+      animation: pulse 1.5s infinite;
       background-color: var(--success-color);
     }
 
     .indicator-red::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
       animation: pulse 1.5s infinite;
       background-color: var(--warning-color);
     }
@@ -310,7 +333,6 @@
 </head>
 
 <body>
-  <!-- Fixed mode indicator displaying current mode (e.g., Remote Mode) -->
   <div id="modeIndicator" class="mode-indicator">
     <i class="fas fa-satellite-dish"></i>
     <span>Remote Mode</span>
@@ -325,7 +347,6 @@
         <div class="video-container">
           <video id="videoElement" controls autoplay playsinline></video>
         </div>
-        <!-- Chart container: displays the real-time weight monitoring chart -->
         <div class="chart-container">
           <div id="weightChart"></div>
         </div>
@@ -370,7 +391,6 @@
                 <div class="status-title">Current Weight</div>
                 <div class="status-value">
                   <span id="weightValue">0.00 g</span>
-                  <!-- Status indicator: color pulse reflects weight condition -->
                   <div id="weightIndicator" class="status-indicator indicator-red"></div>
                 </div>
               </div>
@@ -389,8 +409,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Status card: Display pump status -->
           <div class="status-card">
             <div class="status-header">
               <div class="status-icon">
@@ -403,7 +421,7 @@
             </div>
           </div>
 
-          <!-- Status card: Display servo status -->
+          <!-- Status card: Display pump status -->
           <div class="status-card">
             <div class="status-header">
               <div class="status-icon">
@@ -416,7 +434,6 @@
             </div>
           </div>
 
-          <!-- Button group: Controls for stream, pump, and servo -->
           <div class="button-group">
             <button class="action-btn" onclick="start()">
               <i class="fas fa-play"></i>
@@ -440,27 +457,20 @@
     </div>
   </div>
 
-  <!-- Import MQTT and ECharts libraries -->
   <script src="mqtt.min.js"></script>
   <script src="echarts.min.js"></script>
-  <!-- Main JavaScript using ES6 module format -->
   <script type="module">
-    // Import PiCamera from the module for controlling the video stream
     import { PiCamera } from './picamera.esm.js';
-
-    // Define device unique ID and MQTT configuration parameters
     const deviceUid = '0e15dd52-deb4-4f00-a771-a688fc421871';
-    const mqttHost = 't09d1d6f.ala.cn-hangzhou.emqxsl.cn';
+    const mqttHost = 'qfe6debf.ala.eu-central-1.emqxsl.com';
     const mqttPath = '/mqtt';
     const mqttPort = parseInt('8084');
     const mqttUsername = 'test';
     const mqttPassword = 'test1234';
-    const MQTT_CLIENTID = 'WebAppPet';
+    const MQTT_CLIENTID = 'WebAppPet'
 
-    // Define MQTT subscription and publishing topics
-    const MQTT_SUB_TOPIC = '/Pet/update';
-    const MQTT_PUB_TOPIC = '/Pet/post';
-    // MQTT connection options
+    const MQTT_SUB_TOPIC = '/Pet/update'
+    const MQTT_PUB_TOPIC = '/Pet/post'
     const MQTT_OPTIONS = {
       connectTimeout: 5000,
       clientId: MQTT_CLIENTID,
@@ -469,19 +479,17 @@
       keepalive: 60,
       cleanSession: true,
       clean: true,
-    };
-
-    // Create MQTT client connection using secure WebSocket protocol
+    }
+    //MQTT connection configuration
     const client = mqtt.connect('wss://' + mqttHost + ':' + mqttPort + mqttPath, MQTT_OPTIONS);
-
-    // Video stream control: Reference to video element and connection instance holder
+    // Video stream control
     let videoRef = document.getElementById('videoElement');
     let conn = null;
 
-    // Function to start the video stream
     window.start = async function () {
       try {
-        // Initialize PiCamera connection with device and MQTT details
+        // Get the connection parameters entered by the user
+        // Initialize PiCamera connection
         conn = new PiCamera({
           deviceUid: deviceUid,
           mqttHost: mqttHost,
@@ -489,70 +497,64 @@
           mqttPort: mqttPort,
           mqttUsername: mqttUsername,
           mqttPassword: mqttPassword,
-          // Optional: STUN server configuration if needed
           // stunUrls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
         });
-        // Attach the video stream to the video element
         conn.attach(videoRef);
-        // Establish the connection to start streaming
         conn.connect();
       } catch (err) {
-        console.error('Failed to get video stream:', err);
+        console.error('Failed to obtain video stream:', err);
       }
-    };
+    }
 
-    // Function to stop the video stream
     window.stop = function () {
       if (conn) {
         conn.terminate();
       }
-    };
+    }
 
-    // Function to toggle the pump state; publishes an MQTT message
+    // Device control function
     window.togglePump = function () {
-      console.log("togglePump:", JSON.stringify({ state: document.getElementById('pumpStatus').textContent === '关闭' ? 1 : 0 }));
+      console.log("togglePump:", JSON.stringify({ state: document.getElementById('pumpStatus').textContent === 'Closed' ? 1 : 0 }));
       client.publish(MQTT_PUB_TOPIC, JSON.stringify({
         mode: 1,
         state: document.getElementById('pumpStatus').textContent === 'Closed' ? 1 : 0
       }));
-    };
+    }
 
-    // Function to toggle the servo state; publishes an MQTT message
     window.toggleServo = function () {
       console.log("toggleServo:", JSON.stringify({ angle: document.getElementById('servoStatus').textContent === 'Closed' ? 1 : 0 }));
       client.publish(MQTT_PUB_TOPIC, JSON.stringify({
         mode: 2,
         state: document.getElementById('servoStatus').textContent === 'Closed' ? 1 : 0
       }));
-    };
-
-    // Validate that ECharts library is loaded successfully
-    if (typeof echarts === 'undefined') {
-      console.error('ECharts did not load correctly, please check script path');
     }
 
-    // Variables for real-time weight chart data
+    if (typeof echarts === 'undefined') {
+      console.error('ECharts not loaded correctly, please check the script path');
+    }
+    // Real-time weight chart example
     let weightChart = null;
-    let weightHistory = [];  // Array to hold the weight data points
+    // Store up to 20 data points
+    let weightHistory = [];
     const MAX_DATA_POINTS = 20;
 
-    // Initialize the weight chart using ECharts
+    // Initialize the chart
+    // Enhance the initialization function
     const initWeightChart = () => {
       try {
         const chartDom = document.getElementById('weightChart');
         if (!chartDom) throw new Error('Chart container not found');
 
-        // Set explicit dimensions for the chart container
+        // Explicitly set the container size
         chartDom.style.width = '100%';
         chartDom.style.height = '400px';
 
-        // Initialize the ECharts instance for the chart
+        // Initialize the chart
         weightChart = echarts.init(chartDom);
 
-        // Configure chart options including title, axes, and data series
         const option = {
           title: {
-            text: 'Real-time Weight Monitoring',
+            text: 'Real-time weight monitoring',
             left: 'center',
             textStyle: {
               color: 'var(--text-primary)'
@@ -561,9 +563,8 @@
           tooltip: {
             trigger: 'axis',
             formatter: params => {
-              // Format the tooltip: display time and weight value
               const date = new Date(params[0].value[0]);
-              return `${date.toLocaleTimeString()}<br/>Weight: ${params[0].value[1]}g`;
+              return `${date.toLocaleTimeString()}<br/>weight: ${params[0].value[1]}g`;
             }
           },
           xAxis: {
@@ -575,12 +576,12 @@
           },
           yAxis: {
             type: 'value',
-            name: 'Weight (g)',
+            name: 'weight (g)',
             min: 0,
             max: 500
           },
           series: [{
-            name: 'Weight',
+            name: 'weight',
             type: 'line',
             showSymbol: false,
             smooth: true,
@@ -602,20 +603,19 @@
           }
         };
 
-        // Set the option to the chart
         weightChart.setOption(option);
-        // Adjust the chart size automatically when the window is resized
         window.addEventListener('resize', () => weightChart.resize());
+
       } catch (error) {
         console.error('Chart initialization failed:', error);
       }
     };
 
-    // Update the weight chart with new data
+    // Update chart data
+    // Safe update function
     const updateWeightChart = (weight) => {
       try {
         if (!weightChart) {
-          // If the chart isn’t ready, retry after a short delay
           setTimeout(() => updateWeightChart(weight), 50);
           return;
         }
@@ -623,23 +623,22 @@
         const timestamp = Date.now();
         weightHistory.push([timestamp, weight]);
 
-        // Ensure the array only stores a maximum number of data points
         if (weightHistory.length > MAX_DATA_POINTS) {
           weightHistory = weightHistory.slice(-MAX_DATA_POINTS);
         }
 
-        // Update the chart's series data
         weightChart.setOption({
           series: [{
             data: weightHistory
           }]
         });
+
       } catch (error) {
         console.error('Chart update failed:', error);
       }
     };
 
-    // Initialize the chart when the DOM is fully loaded
+    // Initialize timing control
     const initChart = () => {
       if (document.readyState === 'complete') {
         initWeightChart();
@@ -649,15 +648,14 @@
       }
     };
     initChart();
-
-    // MQTT message handler: process incoming messages and update UI accordingly
+    //MQTT message processing
     client.on('message', function (topic, message) {
       try {
-        // Parse the incoming message as a JSON object
         const data = JSON.parse(message.toString());
         console.log("data:", data);
+        //Refresh the DOM page
 
-        // Update working mode status based on incoming data
+        // Processing mode status
         if (data.mode) {
           const modeElement = document.getElementById('modeStatus');
           const indicator = document.getElementById('modeIndicator');
@@ -672,59 +670,52 @@
           }
         }
 
-        // Update pet detection status
+        // Handling animal detection
         if (data.detection == 1) {
           document.getElementById('animalStatus').innerText = 'Animal Detected';
-        } else {
+        }
+        else {
           document.getElementById('animalStatus').innerText = 'None';
         }
-        
-        // Update weight information: update display text and chart data if weight > 0
+        // Process weight data
         if (data.weight > 0) {
           const weightElement = document.getElementById('weightValue');
           const indicator = document.getElementById('weightIndicator');
           const threshold = parseInt(document.getElementById('weightThreshold').value);
           weightElement.innerText = data.weight.toFixed(2) + ' g';
 
-          // Change indicator color based on whether the weight is below or above the threshold
+          // Update indicator status
           indicator.className = 'status-indicator ' +
             (data.weight < threshold ? 'indicator-red' : 'indicator-green');
 
-          // Update chart data on the next animation frame
           requestAnimationFrame(() => updateWeightChart(data.weight));
         }
 
-        // Update pump status display based on incoming data
+        // Process the pump status
         if (data.pump !== undefined) {
           document.getElementById('pumpStatus').innerText =
             (data.pump == 1) ? 'Running' : 'Closed';
         }
 
-        // Update servo status display based on incoming data
+        // Process the servo status
         if (data.servo !== undefined) {
           document.getElementById('servoStatus').innerText =
             (data.servo == 1) ? 'Open' : 'Closed';
         }
+
       } catch (e) {
-        console.error('Error processing message:', e);
+        console.error('Message processing error:', e);
       }
     });
 
-    // MQTT connection handler: subscribe to updates on successful connection
+    //MQTT connection event
     client.on('connect', () => {
       console.log('MQTT connected successfully');
       client.subscribe(MQTT_SUB_TOPIC);
     });
 
-    // MQTT error event: log any connection errors
     client.on('error', (err) => {
       console.error('MQTT connection error:', err);
-    });
-  </script>
-</body>
-
-</html>
-
     });
   </script>
 </body>
