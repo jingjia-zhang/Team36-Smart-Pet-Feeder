@@ -90,7 +90,7 @@ std::vector<std::string> splitString(const std::string& s)
     std::stringstream stream(s);
     std::string token;
     while (std::getline(stream, token, ' '))
-    { // 使用空格作为分隔符
+    { // Use spaces as separators
         tokens.push_back(token);
     }
     return tokens;
@@ -225,7 +225,7 @@ int main(void)
             {
                 if (isMqttConnStatus)
                 {
-                    // 构建json
+                    // Build json
                     nlohmann::json j = nlohmann::json::object();
                     j["mode"] = ((mode == 1) ? "Remote" : "Auto");
                     j["detection"] = !infrared_status;
