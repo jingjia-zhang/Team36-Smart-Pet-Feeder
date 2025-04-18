@@ -7,17 +7,17 @@
 
 class MQTTClientWrapper {
 public:
-    // 删除拷贝构造函数和赋值运算符
+    // Removing Copy Constructors and Assignment Operators
     MQTTClientWrapper(const MQTTClientWrapper&) = delete;
     MQTTClientWrapper& operator=(const MQTTClientWrapper&) = delete;
 
-    // 获取单例实例
+    // Getting a singleton instance
     static MQTTClientWrapper& getInstance() {
         static MQTTClientWrapper instance;
         return instance;
     }
 
-    // 初始化MQTT客户端
+    // Initialising the MQTT client
     void initialize(const std::string& address, const std::string& clientId) {
         std::lock_guard<std::mutex> lock(mutex_);
 
@@ -31,13 +31,13 @@ public:
             throw std::runtime_error("Failed to create MQTT client: " + std::to_string(rc));
         }
 
-        // 设置回调函数
+        // Setting the callback function
         MQTTClient_setCallbacks(client_, this, connectionLostCallback, messageArrivedCallback, deliveryCompleteCallback);
 
         initialized_ = true;
     }
 
-    // 连接到MQTT代理
+    // Connecting to the MQTT Agent
     void connect(const std::string& username = "", const std::string& password = "") {
         std::lock_guard<std::mutex> lock(mutex_);
 
@@ -49,7 +49,7 @@ public:
         MQTTClient_SSLOptions ssl_opts = MQTTClient_SSLOptions_initializer;
         conn_opts.keepAliveInterval = 60;
         conn_opts.cleansession = 1;
-        conn_opts.ssl = &ssl_opts;  // 传递合法左值地址
+        conn_opts.ssl = &ssl_opts;  // Pass legal left address
 
         if (!username.empty()) {
             conn_opts.username = username.c_str();
@@ -62,7 +62,7 @@ public:
         }
     }
 
-    // 发布消息
+    // post a message
     void publish(const std::string& topic, const std::string& payload, int qos = 0) {
         std::lock_guard<std::mutex> lock(mutex_);
 
@@ -82,14 +82,14 @@ public:
             throw std::runtime_error("Publish failed: " + std::to_string(rc));
         }
 
-        // 等待消息确认（可选）
+        // Wait for message acknowledgement (optional)
         rc = MQTTClient_waitForCompletion(client_, token, 1000L);
         if (rc != MQTTCLIENT_SUCCESS) {
             throw std::runtime_error("Message not acknowledged: " + std::to_string(rc));
         }
     }
 
-    // 订阅主题
+    // Subscribe to threads
     void subscribe(const std::string& topic, int qos = 0) {
         std::lock_guard<std::mutex> lock(mutex_);
 
@@ -99,7 +99,7 @@ public:
         }
     }
 
-    // 断开连接
+    // Disconnect
     void disconnect() {
         std::lock_guard<std::mutex> lock(mutex_);
 
@@ -108,7 +108,7 @@ public:
         }
     }
 
-    // 设置消息到达回调
+    // Setting up message arrival callbacks
     void setMessageHandler(std::function<void(const std::string& topic, const std::string& message)> handler) {
         std::lock_guard<std::mutex> lock(mutex_);
         messageHandler_ = std::move(handler);
@@ -120,7 +120,7 @@ private:
     std::mutex mutex_;
     std::function<void(const std::string&, const std::string&)> messageHandler_;
 
-    // 清理资源
+    // Liquidation of resources
     ~MQTTClientWrapper() {
         std::lock_guard<std::mutex> lock(mutex_);
         if (client_) {
@@ -132,18 +132,18 @@ private:
     }
 
 private:
-    // 私有构造函数
+    // private constructor
     MQTTClientWrapper() = default;
 
-    // 连接丢失回调（静态成员函数）
+    // Connection loss callback (static member function)
     static void connectionLostCallback(void* context, char* cause) {
         auto* instance = static_cast<MQTTClientWrapper*>(context);
         std::cerr << "Connection lost! Cause: "
             << (cause ? cause : "unknown") << std::endl;
-        // 可以在这里添加重连逻辑
+        // Reconnect logic can be added here
     }
 
-    // 消息到达回调（静态成员函数）
+    // Message arrival callback (static member function)
     static int messageArrivedCallback(void* context, char* topicName, int topicLen,
         MQTTClient_message* message) {
         auto* instance = static_cast<MQTTClientWrapper*>(context);
@@ -163,14 +163,14 @@ private:
         return 1;
     }
 
-    // 消息送达回调（静态成员函数）
+    // Message delivery callback (static member function)
     static void deliveryCompleteCallback(void* context, MQTTClient_deliveryToken token) {
         auto* instance = static_cast<MQTTClientWrapper*>(context);
         std::cout << "Message with token " << token << " delivered" << std::endl;
     }
 };
 
-/* 使用示例：
+/* usage example：
 int main() {
     try {
         auto& mqtt = MQTTClientWrapper::getInstance();
@@ -184,7 +184,7 @@ int main() {
         mqtt.subscribe("test/topic");
         mqtt.publish("test/topic", "Hello MQTT");
 
-        // 保持连接
+        // Stay connected
         std::this_thread::sleep_for(std::chrono::seconds(5));
         mqtt.disconnect();
     } catch (const std::exception& e) {
