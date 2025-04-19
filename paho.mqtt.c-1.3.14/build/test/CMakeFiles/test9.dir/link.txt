@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/test9.dir/test9.c.o -o test9  -Wl,-rpath,/home/admin/Desktop/work_space/paho.mqtt.c-1.3.14/build/src ../src/libpaho-mqtt3a.so.1.3.14 -lc -ldl -lpthread -lrt -lanl 
