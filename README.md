@@ -18,7 +18,10 @@
 #### 6. Mobile Application
 - The Pictures of Our Mobile Application
 - How to Use Our Mobile Application
-#### 7. Team Member Introduction & Task Allocation
+#### 7. Repository Structure
+#### 8. Team Member Introduction & Task Allocation
+#### 9. License
+
 
 \---------------------------------------------------------------------------------------------------------------------------------
 
@@ -146,7 +149,29 @@ The system runs custom control software on an embedded Linux platform, integrati
 
 - **How to Use Our Mobile Application**
 
-### 7. Team Member Introduction & Task Allocation
+### 7. Repository Structure
+
+SmartPetFeeder/
+├── README.md                  # Project description and usage instructions
+├── LICENSE                          # Open source license file
+├── web/                               # Web frontend for remote control and visualization
+│   ├── index.html                # Main UI page
+│   ├── mqtt.js                      # MQTT over WebSocket communication
+│   ├── echarts.min.js         # (3rd-party) Chart rendering library
+│   └── chart.js                     # Weight and status display
+├── Project/                         # External libraries, build scripts, and binaries
+│   ├── 3rd/                          # Precompiled libraries (e.g., hv, mqtt)
+│   ├── bin/                          # Output binaries and calibration logs
+│   └── build/                       # CMake build files (ignored by Git)
+├── RaspberryPi-WebRTC-main/  # Video and audio streaming module using WebRTC
+│   ├── src/                          # WebRTC backend logic
+│   └── doc/                        # Setup and architecture documentation
+├── test/                              # Unit test files and validation scripts
+├── images/                       # (Optional) Project photos or diagrams
+├── video/                          # (Optional) Demo or test videos
+└── docs/                           # (Optional) Technical or team documentation
+
+### 8. Team Member Introduction & Task Allocation
 
 - Jingjia Zhang (2944713Z)
 
@@ -167,3 +192,5 @@ The system runs custom control software on an embedded Linux platform, integrati
 - Hongzhan Li (2962160L)
 
   Project Maintenance and Problem Handling. Responsible for testing and debugging, locating and fixing bugs, and coordinating with other team members to solve problems.
+
+### 9. License
