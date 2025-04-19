@@ -147,3 +147,23 @@ The system runs custom control software on an embedded Linux platform, integrati
 - **How to Use Our Mobile Application**
 
 ### 7. Team Member Introduction & Task Allocation
+
+- Jingjia Zhang (2944713Z)
+
+  Project Development. Responsible for Raspberry Pi control code with sensors, motors, pumps, voice modules and other hardware.
+  
+- Runze Zhang (2960782Z)
+
+  Project Development. Responsible for Raspberry Pi control code with sensors, motors, pumps, voice modules and other hardware.
+  
+- Hongji Zhang (2961176Z)
+
+  Project Development. Responsible for Raspberry Pi control code with sensors, motors, pumps, voice modules and other hardware.
+  
+- Minghao Jiang (2961294J)
+
+  Hardware Engineering (PCB Design). Design PCB schematics and board layouts to integrate Raspberry Pi interfaces, sensor wiring, power management, and module packaging.
+  
+- Hongzhan Li (2962160L)
+
+  Project Maintenance and Problem Handling. Responsible for testing and debugging, locating and fixing bugs, and coordinating with other team members to solve problems.
