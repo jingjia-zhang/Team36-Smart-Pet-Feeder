@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/project.dir/src/SerialPort.cpp.o CMakeFiles/project.dir/src/main.cpp.o CMakeFiles/project.dir/src/qmqtt_client.cpp.o -o /home/admin/Desktop/work_space/Project/bin/project   -L/home/admin/Desktop/work_space/Project/3rd/lib  -Wl,-rpath,/home/admin/Desktop/work_space/Project/3rd/lib -lwiringPi -lhv 
