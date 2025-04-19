@@ -151,7 +151,7 @@ The system runs custom control software on an embedded Linux platform, integrati
 
 ### 7. Repository Structure
 
-![image](https://github.com/user-attachments/assets/168d72c4-1314-4d86-9440-7224a005f6bc)
+![image](https://github.com/user-attachments/assets/5ff021a7-780f-4ea5-88f7-5389c7356333)
 
 ### 8. Team Member Introduction & Task Allocation
 
