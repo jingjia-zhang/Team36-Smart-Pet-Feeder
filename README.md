@@ -1,58 +1,42 @@
 # Smart Pet Feeder based on Raspberry Pi 5B 
 
-\---------------------------------------           
- Our real-time Embedded system code is 88% developed in C++. 
- \--------------------------------------- 
- Our motto is, " Making inexpensive and safe feeder products for customers. " 
-
+\------------------------------------------------------------------------------------------------------------------------------------------------------------     
  
+ Our real-time Embedded system code is 88% developed in C++. 
+ 
+ Our motto is, " Making Inexpensive , Safe and Smart Pet Feeder Products for Customers. " 
 
-Document Introduction
+## Document Introduction
+####  1. The Link to our Instagram
+- The Social Media Link
+#### 2. The Project Introduction
+#### 3. Functions of Our Automatic Pet Feeder
+- Project Objectives
+- Technical Realization
+#### 4. The Circuit Diagram Introduction and Description of Core Functions of Each Module
+#### 5. Component Introduction 
+#### 6. Mobile Application
+- The Pictures of Our Mobile Application
+- How to Use Our Mobile Application
+#### 7. Team Member Introduction & Task Allocation
 
+\------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-- The Social Media Link 
-
-​	1. The Link to Our Instagram 
-
-- The Project Introduction: 
-
-​	1. The Functions of the Smart Pet Feeder
-
-​	2. The Threads we used and Introduction of Them 
-
-- Functions
-
-- The Circuit Diagram Introduction
-
-- Component Introduction
-
-- Team Member Introduction & Task Allocation 
-
-  
-
-- Mobile App 
-
-​	1. The Picture of Our Mobile Application 
-
-​	2. How to Use Our Mobile Application 
-
-
-
-### 1.**The Social Media Link** 
+### 1. **The Social Media Link** 
 
 Please watch our demonstration video here: https://www.instagram.com/p/DIn8_9MM1OK/?utm_source=qr
 
 ![b8654549c2ea8379312fa44fedd8a92](https://github.com/user-attachments/assets/f7985afb-f975-4c9c-8b28-0a059acd0d07)
 
-### 2.**The Project Introduction** 
+### 2. **The Project Introduction** 
 
 With the accelerated pace of modern life, many pet owners are unable to ensure that their pets eat and drink on time due to busy work schedules or short-term trips. To improve the quality of life of pets, some smart feeding devices have appeared on the market, but most of them have a single function and are difficult to meet individual needs. The aim of this project is to develop a Raspberry Pi 5B-based smart pet feeder that integrates automatic feeding, automatic water feeding, pet sensing, camera visualization and voice dialogue, allowing pet owners to remotely manage their pets' diet and health even when they are not at home. 
 
  
 
-### 3.**Functions of Our Smart pet feeder** 
+### 3. **Functions of Our Smart pet feeder** 
 
-#### Project Objectives 
+- #### Project Objectives 
 
 1.Remote automated feeding: ensure pets eat and drink on time through a timed feeding mechanism or remote control and support intelligent adjustment of feeding schedules. 
 
@@ -64,7 +48,7 @@ With the accelerated pace of modern life, many pet owners are unable to ensure t
 
 5.Convenient remote control: Support mobile APP or web access, remote video viewing, manual feeding, data analysis and other functions, so that pet feeding is more intelligent. 
 
-#### Technical Realization
+- #### Technical Realization
 
 Embedded platform: adopts Raspberry Pi 5B as the core processing unit, supporting multi-thread processing to improve system response speed. 
 
@@ -84,7 +68,7 @@ This project is dedicated to creating a pet feeder with comprehensive functions 
 
  
 
-### 4.**The Circuit Diagram** 
+### 4. **Design and Implementation of Our Smart Pet Feeder Using Raspberry Pi** 
 
 The Altium Designer project can be found in the folder Circuit Schematic. 
 
@@ -92,27 +76,27 @@ The Altium Designer project can be found in the folder Circuit Schematic.
 
 This schematic represents a Smart Pet Feeder System based on the Raspberry Pi 5 platform. The design integrates multiple functional modules to enable automated and intelligent management of pet feeding routines. The system adopts a modular architecture, facilitating scalability and maintenance. Its core functionalities are described as follows: 
 
-1. Main Control Unit – Raspberry Pi 5 (U1) 
+#### 1. Main Control Unit – Raspberry Pi 5 (U1) 
 
 The Raspberry Pi 5 serves as the central processing unit, responsible for data handling, control logic execution, and coordination among peripheral modules. It communicates with external devices via multiple GPIO pins to perform tasks such as timed feeding, sensor monitoring, and voice output. 
 
-2. Infrared Sensor Module (U2) 
+#### 2. Infrared Sensor Module (U2) 
 
 This module detects the presence of a pet near the feeder. It outputs a digital HIGH/LOW signal through the OUT pin to GPIO22 on the Raspberry Pi, providing real-time proximity detection. The output signal can trigger feeding or voice notification procedures. 
 
-3. Water Pump Control Module (U5) 
+#### 3. Water Pump Control Module (U5) 
 
 The LR7843 driver chip controls a miniature water pump. PWM signals from GPIO26 are used to turn the pump on or off, enabling automatic water dispensing. The load and control signals are electrically isolated to enhance system stability and noise immunity. 
 
-4. Servo Control Module (U3) 
+#### 4. Servo Control Module (U3) 
 
 This module operates mechanical gates or rotating components to dispense food in precise quantities. The servo receives PWM control signals via the SIG pin connected to GPIO17, enabling accurate actuation of food dispensing mechanisms. 
 
-5. Weighing Module – HX711 (M1) 
+#### 5. Weighing Module – HX711 (M1) 
 
 This module measures the weight of food in the bowl to determine if replenishment is needed. The HX711 is a 24-bit high-precision ADC that communicates with the Raspberry Pi via DT (GPIO24) and SCK (GPIO25) pins, ensuring accurate and real-time weight data acquisition. 
 
-6. Voice Interaction Module – SU-03T (U13) 
+#### 6. Voice Interaction Module – SU-03T (U13) 
 
 This module supports voice playback functions, providing system status updates, user interaction, or pet-friendly prompts. It communicates via serial signals connected to GPIO12 and supports speaker outputs (SPK+/-), enabling customized audio playback. 
 
@@ -122,36 +106,44 @@ The system runs custom control software on an embedded Linux platform, integrati
 
 
 
-### 5.Component Introduction
+### 5. Component Introduction
 
-### 1. Main Controller
+#### 1. Main Controller
 
 - **Raspberry Pi 5B** with camera module
 
   
 
-### 2. Sensors & Modules
+#### 2. Sensors & Modules
 
-- **2.1** Infrared sensor ×1
-
-  
-
-- **2.2** Load cell with **HX711** module
+- Infrared sensor ×1
 
   
 
-- **2.3** Water pump ×1
+- Load cell with **HX711** module
 
   
 
-- **2.4** Servo motor **SG90** ×1
+- Water pump ×1
 
   
 
-- **2.5** Voice module **SU-03T** ×1
+- Servo motor **SG90** ×1
 
   
 
-- **2.6** Several Dupont wires
+- Voice module **SU-03T** ×1
 
   
+
+- Several Dupont wires
+
+  
+
+### 6. Mobile Application
+
+- **The Pictures of Our Mobile Application**
+
+- **How to Use Our Mobile Application**
+
+### 7. Team Member Introduction & Task Allocation
