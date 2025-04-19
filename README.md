@@ -1,4 +1,4 @@
-# Pet Automatic Feeder based on Raspberry Pi 5B 
+# Smart Pet Feeder based on Raspberry Pi 5B 
 
 \---------------------------------------           
  Our real-time Embedded system code is 88% developed in C++. 
@@ -12,29 +12,29 @@ Document Introduction
 
 - The Social Media Link 
 
-​	1. The link to our instagram 
+​	1. The Link to Our Instagram 
 
-- The project Introduction: 
+- The Project Introduction: 
 
-​	1. The functions the auto feed machine has 
+​	1. The Functions of the Smart Pet Feeder
 
-​	2. The Threads we use and introduction for them 
+​	2. The Threads we used and Introduction of Them 
 
-- Function
+- Functions
 
-- The circuit diagram introduction
+- The Circuit Diagram Introduction
 
 - Component Introduction
 
-- Team member introduction & Task allocation 
+- Team Member Introduction & Task Allocation 
 
   
 
 - Mobile App 
 
-​	1. The pics of our mobile application 
+​	1. The Picture of Our Mobile Application 
 
-​	2. How to use our mobile application 
+​	2. How to Use Our Mobile Application 
 
 
 
@@ -50,7 +50,7 @@ With the accelerated pace of modern life, many pet owners are unable to ensure t
 
  
 
-### 3.**Functions of our automatic pet feeder** 
+### 3.**Functions of Our Smart pet feeder** 
 
 #### Project Objectives 
 
@@ -64,7 +64,7 @@ With the accelerated pace of modern life, many pet owners are unable to ensure t
 
 5.Convenient remote control: Support mobile APP or web access, remote video viewing, manual feeding, data analysis and other functions, so that pet feeding is more intelligent. 
 
-Technical realization 
+#### Technical Realization
 
 Embedded platform: adopts Raspberry Pi 5B as the core processing unit, supporting multi-thread processing to improve system response speed. 
 
