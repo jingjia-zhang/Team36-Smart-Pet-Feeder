@@ -151,25 +151,7 @@ The system runs custom control software on an embedded Linux platform, integrati
 
 ### 7. Repository Structure
 
-SmartPetFeeder/
-├── README.md                  # Project description and usage instructions
-├── LICENSE                          # Open source license file
-├── web/                               # Web frontend for remote control and visualization
-│   ├── index.html                # Main UI page
-│   ├── mqtt.js                      # MQTT over WebSocket communication
-│   ├── echarts.min.js         # (3rd-party) Chart rendering library
-│   └── chart.js                     # Weight and status display
-├── Project/                         # External libraries, build scripts, and binaries
-│   ├── 3rd/                          # Precompiled libraries (e.g., hv, mqtt)
-│   ├── bin/                          # Output binaries and calibration logs
-│   └── build/                       # CMake build files (ignored by Git)
-├── RaspberryPi-WebRTC-main/  # Video and audio streaming module using WebRTC
-│   ├── src/                          # WebRTC backend logic
-│   └── doc/                        # Setup and architecture documentation
-├── test/                              # Unit test files and validation scripts
-├── images/                       # (Optional) Project photos or diagrams
-├── video/                          # (Optional) Demo or test videos
-└── docs/                           # (Optional) Technical or team documentation
+![image](https://github.com/user-attachments/assets/168d72c4-1314-4d86-9440-7224a005f6bc)
 
 ### 8. Team Member Introduction & Task Allocation
 
