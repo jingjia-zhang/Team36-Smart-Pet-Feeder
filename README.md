@@ -113,35 +113,40 @@ The system runs custom control software on an embedded Linux platform, integrati
 
 #### 1. Main Controller
 
-- **Raspberry Pi 5B** with camera module
+- **Raspberry Pi 5B** 
 
-  
+  ![image](https://github.com/user-attachments/assets/8391e5c1-71b5-4f02-b63f-dea7aff676ee)
 
 #### 2. Sensors & Modules
 
-- Infrared sensor ×1
+- **Infrared sensor ×1**
 
-  
+  ![f30df0e18c183e1698f7bc9c0960bd2](https://github.com/user-attachments/assets/e5f10256-509d-42df-a6e6-e7677dd97fb1)
 
-- Load cell with **HX711** module
+- **Load cell with HX711 module ×1**
 
-  
+  ![7b18a948369ae4907e2354afa1dc9f1](https://github.com/user-attachments/assets/0a36d36b-6a27-4890-a000-0958b54f400e)
 
-- Water pump ×1
+- **Camera module ×1**
 
-  
+  ![5d37d4e8bc5ede85e4603ac3d32e43f](https://github.com/user-attachments/assets/57b6393a-3fc3-4ea3-a63a-53e16c30bce2)
 
-- Servo motor **SG90** ×1
+- **Water pump ×1**
 
-  
+  ![cb95196e7711e2ee8bec04b675bc5a1](https://github.com/user-attachments/assets/9e378500-ca54-4691-b148-17a60a9af517)
 
-- Voice module **SU-03T** ×1
 
-  
+- **Servo motor SG90 ×1**
 
-- Several Dupont wires
+  ![151d789f5a284a76aeb17477e7be648](https://github.com/user-attachments/assets/64e7ebc7-deb1-4cfb-b001-c8f5e07263b2)
 
-  
+- **Voice module SU-03T ×1**
+
+  ![2c72e6d1f41c826a3636111453e05af](https://github.com/user-attachments/assets/822d5844-1415-48a4-92da-38263ff61717)
+
+- **Several Dupont wires**
+
+  ![9be274519104183d3cd9c4a5afa6786](https://github.com/user-attachments/assets/14596334-7731-4725-a1cd-f91db53cd1ba)
 
 ### 6. Mobile Application
 
