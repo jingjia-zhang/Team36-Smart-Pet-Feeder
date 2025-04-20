@@ -152,6 +152,8 @@ The system runs custom control software on an embedded Linux platform, integrati
 
 - **The Pictures of Our Mobile Application**
 
+  ![9eb635b8c65f3c414829824f4ac4cac](https://github.com/user-attachments/assets/efad4965-6dba-42c7-a86c-234fa784ef2f)
+
 - **How to Use Our Mobile Application**
 
 ### 7. Repository Structure
