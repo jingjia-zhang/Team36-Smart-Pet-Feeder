@@ -15,9 +15,8 @@
 - Technical Realization
 #### 4. The Circuit Diagram Introduction and Description of Core Functions of Each Module
 #### 5. Component Introduction 
-#### 6. Mobile Application
-- The Pictures of Our Mobile Application
-- How to Use Our Mobile Application
+#### 6. Web Page for Remote Control and Status Display
+- The Picture of Our Web Page
 #### 7. Repository Structure
 #### 8. Team Member Introduction & Task Allocation
 #### 9. License
@@ -49,7 +48,7 @@ With the accelerated pace of modern life, many pet owners are unable to ensure t
 
 4.Data management and health monitoring: Record pet's eating time, intake and other data to provide owner with more scientific feeding suggestions. 
 
-5.Convenient remote control: Support mobile APP or web access, remote video viewing, manual feeding, data analysis and other functions, so that pet feeding is more intelligent. 
+5.Convenient remote control: Support web access, remote video viewing, manual feeding, data analysis and other functions, so that pet feeding is more intelligent. 
 
 - #### Technical Realization
 
@@ -148,13 +147,11 @@ The system runs custom control software on an embedded Linux platform, integrati
 
   ![9be274519104183d3cd9c4a5afa6786](https://github.com/user-attachments/assets/14596334-7731-4725-a1cd-f91db53cd1ba)
 
-### 6. Mobile Application
+### 6. Web Page for Remote Control and Status Display
 
-- **The Pictures of Our Mobile Application**
+- **The Picture of Our Web Page**
 
-  ![9eb635b8c65f3c414829824f4ac4cac](https://github.com/user-attachments/assets/efad4965-6dba-42c7-a86c-234fa784ef2f)
-
-- **How to Use Our Mobile Application**
+  ![df3575f7e980e73728eeedf582265e5](https://github.com/user-attachments/assets/f499831f-282b-45f2-bfeb-8169adc42f07)
 
 ### 7. Repository Structure
 
