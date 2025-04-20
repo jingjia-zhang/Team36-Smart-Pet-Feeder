@@ -74,7 +74,8 @@ This project is dedicated to creating a pet feeder with comprehensive functions 
 
 The Altium Designer project can be found in the folder Circuit Schematic. 
 
-{circuit picture}
+![image](https://github.com/user-attachments/assets/a5740e59-f767-4d95-acde-e5efa4959d23)
+
 
 This schematic represents a Smart Pet Feeder System based on the Raspberry Pi 5 platform. The design integrates multiple functional modules to enable automated and intelligent management of pet feeding routines. The system adopts a modular architecture, facilitating scalability and maintenance. Its core functionalities are described as follows: 
 
