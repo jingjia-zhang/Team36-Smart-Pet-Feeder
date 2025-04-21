@@ -184,7 +184,7 @@ The system runs custom control software on an embedded Linux platform, integrati
 
 MIT License
 
-Copyright (c) 2025 Team 36
+Copyright (c) 2025 Team36-Smart-Pet-Feeder
 
 Permission is hereby granted, free of charge, to any person obtaining a copy  
 of this software and associated documentation files (the "Software"), to deal  
