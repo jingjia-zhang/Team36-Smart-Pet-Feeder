@@ -18,8 +18,9 @@
 #### 6. Web Page for Remote Control and Status Display
 - The Picture of Our Web Page
 #### 7. Repository Structure
-#### 8. Team Member Introduction & Task Allocation
-#### 9. License
+#### 8. Operating Principle
+#### 9. Team Member Introduction & Task Allocation
+#### 10. License
 
 
 \---------------------------------------------------------------------------------------------------------------------------------
@@ -158,7 +159,76 @@ The system runs custom control software on an embedded Linux platform, integrati
 
 ![image](https://github.com/user-attachments/assets/672bff98-1d38-463d-907b-e89a8d9f7ed4)
 
-### 8. Team Member Introduction & Task Allocation
+### 8. Operating Principle
+
+1. System Power On
+   
+   Device is powered up (battery or power supply).
+
+   Mainboard (e.g., Raspberry Pi) boots and loads all modules.
+
+2. Initialize Devices
+   
+   Initialize:
+
+   Servo motor/Feeder; Water pump; IR sensor; Voice module; Camera module (e.g., USB / PiCam); Network module (Wi-Fi/4G + MQTT/HTTP); Real-Time Clock (RTC)
+   
+3. Connect to Server
+   
+   Attempt to connect to cloud platform or custom server.
+
+   If connection fails: Enter offline mode with local logging.
+   
+   If connection succeeds: Sync time and configuration. Enable remote commands
+   
+4. Enter Main Loop
+   
+   System continuously monitors environment and schedules.
+   
+5. IR Sensor Check: Is Pet Nearby?
+   
+   If No → return to top of loop.
+   
+   If Yes → proceed with interaction and validation.
+   
+6. Capture Image via Camera
+   Take a snapshot or stream video.
+   
+   Upload image to server for logging or user view
+   
+7. Check Feeding Schedule
+   
+   Compare current time to feeding schedule (local or server-configured).
+   
+   If time is right → proceed
+   
+   If not yet → optionally notify server or return to loop
+   
+8. Voice Prompt + Interaction
+
+   Play voice line (e.g., “Welcome, want some food?”)
+
+   Optionally detect voice input from user/pet
+   
+9. Feeding and Watering Action
+
+   Activate feeder and water pump
+
+   Use delay-based timing for control
+
+10. Log + Upload Feeding Event
+
+   Record: Timestamp; Pet presence; Snapshot; Feeding status (success/fail)
+
+   Upload to server: Cloud dashboard; Push notification
+   
+11. Return to Loop
+
+   Short wait or idle state
+
+   Go back to IR detection
+
+### 9. Team Member Introduction & Task Allocation
 
 - Jingjia Zhang (2944713Z)
 
@@ -180,7 +250,7 @@ The system runs custom control software on an embedded Linux platform, integrati
 
   Project Maintenance and Problem Handling. Responsible for testing and debugging, locating and fixing bugs, and coordinating with other team members to solve problems.
 
-### 9. License
+### 10. License
 
 MIT License
 
