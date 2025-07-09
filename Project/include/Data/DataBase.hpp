@@ -1,9 +1,9 @@
 #pragma once
-#include <sqlite3.h>
 #include <string>
 #include <vector>
 #include <memory>
 #include <chrono>
+#include <sqlite3.h>
 
 class Database final {
 public:
@@ -44,11 +44,13 @@ public:
     void vacuum();
     void backup(const std::string& output_path);
 
+    std::string timeToString(const std::chrono::system_clock::time_point& tp);
+    std::string timeToDbString(const std::chrono::system_clock::time_point& tp) const;
+
 private:
     sqlite3* db_;
     std::string path_;
 
-    void checkError(int rc) const;
+	void checkError(int rc, const std::string& context = "") const;
     void initializeSchema();
-    std::string timeToDbString(const std::chrono::system_clock::time_point& tp) const;
 };
