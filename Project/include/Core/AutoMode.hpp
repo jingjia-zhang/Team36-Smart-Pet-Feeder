@@ -1,29 +1,23 @@
 #pragma once
-#include <functional>
-#include <atomic>
-#include <vector>
-#include <unordered_map>
+#include "Hardware/GPIOChip.hpp"
+#include <memory>
 #include <chrono>
 
-class AutoMode {
+class IServoMotor {
 public:
-    using ConditionCheck = std::function<bool()>;
-    using ActionCallback = std::function<void()>;
+    virtual void setAngle(int angle) = 0; // 0-180 degrees
+    virtual ~IServoMotor() = default;
+};
 
-    struct Rule {
-        ConditionCheck condition;
-        ActionCallback action;
-        std::chrono::milliseconds cooldown;
-    };
-
-    AutoMode() = default;
-
-    void addRule(Rule rule);
-    void update();
-    void setEnabled(bool enabled);
-
+class ServoMotor : public IServoMotor {
+public:
+    ServoMotor(std::shared_ptr<GPIOChip> gpio, int pin);
+    void setAngle(int angle) override;
+    
 private:
-    std::vector<Rule> rules_;
-    std::atomic<bool> enabled_{true};
-    std::unordered_map<size_t, std::chrono::steady_clock::time_point> lastExecuted_;
+    std::shared_ptr<GPIOChip> gpio_;
+    int pin_;
+    int currentAngle_;
+    
+    void generatePulse(int widthUs);
 };
