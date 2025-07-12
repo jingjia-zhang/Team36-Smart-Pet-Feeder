@@ -62,7 +62,7 @@ bool CameraModule::initialize(const std::string& deviceId, int width, int height
         fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
         fmt.fmt.pix.width = m_width;
         fmt.fmt.pix.height = m_height;
-        fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUYV; // YUYV格式
+        fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUYV; // YUYV format
         fmt.fmt.pix.field = V4L2_FIELD_INTERLACED;
 
         if (ioctl(fd, VIDIOC_S_FMT, &fmt) == -1) {
