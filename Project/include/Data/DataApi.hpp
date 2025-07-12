@@ -44,7 +44,7 @@ public:
     void vacuum();
     void backup(const std::string& output_path);
 
-    // 辅助函数声明
+    // Auxiliary function declarations
     std::string timeToString(const std::chrono::system_clock::time_point& tp);
 
 private:

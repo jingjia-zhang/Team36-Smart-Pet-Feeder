@@ -4,27 +4,27 @@ DataApi::DataApi(const std::string& dbPath) : db_(std::make_unique<Database>(dbP
 
 DataApi::~DataApi() = default;
 
-// 记录喂食数据到数据库
+// Record feeding data to database
 void DataApi::logFeeding(float weightBefore, float weightAfter) {
     db_->logFeeding(weightBefore, weightAfter);
 }
 
-// 获取指定时间范围内的喂食记录
+// Get feeding records for a specified time range
 std::vector<Database::FeedingRecord> DataApi::getFeedingsBetween(const std::string& start, const std::string& end) {
     return db_->getFeedingsBetween(start, end);
 }
 
-// 获取指定日期的每日汇总信息
+// Get daily summary information for a specified date
 Database::DailyStats DataApi::getDailyStats(const std::string& date) {
     return db_->getDailyStats(date);
 }
 
-// 备份数据库
+// Backup database
 void DataApi::backupDatabase(const std::string& path) {
     db_->backup(path);
 }
 
-// 发送HTTP请求
+// Send HTTP request
 requests::Response DataApi::sendHttpRequest(const std::string& reqStr) {
     return axios::axios(reqStr);
 }
