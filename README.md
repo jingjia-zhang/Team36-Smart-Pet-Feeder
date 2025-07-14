@@ -56,25 +56,21 @@ Raspberry Pi 5B
 └─ README.md
 
 ## Operating Principle
+
 1. System Power On
    
-   Device is powered up (battery or power supply).
-
+   Device is powered up (battery or power supply).<br>
    Mainboard (e.g., Raspberry Pi) boots and loads all modules.
 
 2. Initialize Devices
    
-   Initialize:
-
-   Servo motor/Feeder; Water pump; IR sensor; Voice module; Camera module (e.g., USB / PiCam); Network module (Wi-Fi/4G + MQTT/HTTP); Real-Time Clock (RTC)
+   Initialize: Servo motor/Feeder; Water pump; IR sensor; Voice module; Camera module (e.g., USB / PiCam); Network module (Wi-Fi/4G + HTTP); Real-Time Clock (RTC).
    
 3. Connect to Server
    
-   Attempt to connect to cloud platform or custom server.
-
-   If connection fails: Enter offline mode with local logging.
-   
-   If connection succeeds: Sync time and configuration. Enable remote commands
+   Attempt to connect to cloud platform or custom server.<br>
+   If connection fails: Enter offline mode with local logging.<br>
+   If connection succeeds: Sync time and configuration. Enable remote commands.
    
 4. Enter Main Loop
    
@@ -82,46 +78,39 @@ Raspberry Pi 5B
    
 5. IR Sensor Check: Is Pet Nearby?
    
-   If No → return to top of loop.
-   
+   If No → return to top of loop.<br>
    If Yes → proceed with interaction and validation.
    
 6. Capture Image via Camera
-   Take a snapshot or stream video.
-   
-   Upload image to server for logging or user view
+
+   Take a snapshot or stream video.<br>
+   Upload image to server for logging or user view.
    
 7. Check Feeding Schedule
    
-   Compare current time to feeding schedule (local or server-configured).
-   
-   If time is right → proceed
-   
-   If not yet → optionally notify server or return to loop
+   Compare current time to feeding schedule (local or server-configured).<br>
+   If time is right → proceed.<br>
+   If not yet → optionally notify server or return to loop.
    
 8. Voice Prompt + Interaction
-
-   Play voice line (e.g., “Welcome, want some food?”)
-
-   Optionally detect voice input from user/pet
+    
+    Play voice line (e.g., “Welcome, want some food?”).<br>
+    Optionally detect voice input from user/pet.
    
 9. Feeding and Watering Action
 
-   Activate feeder and water pump
-
-   Use delay-based timing for control
+   Activate feeder and water pump.<br>
+   Use delay-based timing for control.
 
 10. Log + Upload Feeding Event
 
-    Record: Timestamp; Pet presence; Snapshot; Feeding status (success/fail)
-
-    Upload to server: Cloud dashboard; Push notification
+    Record: Timestamp; Pet presence; Snapshot; Feeding status (success/fail).<br>
+    Upload to server: Cloud dashboard; Push notification.
    
 11. Return to Loop
 
-    Short wait or idle state
-
-    Go back to IR detection
+    Short wait or idle state.<br>
+    Go back to IR detection.
 
 ## Main Modules
 
@@ -149,7 +138,7 @@ Raspberry Pi 5B
 
 - https://www.instagram.com/p/DIn8_9MM1OK/?utm_source=qr
 
-- <img src="https://github.com/user-attachments/assets/56eea94b-a509-4db9-9c5a-6ab82ff19774" alt="Web UI" width="350"/>
+<img src="https://github.com/user-attachments/assets/56eea94b-a509-4db9-9c5a-6ab82ff19774" alt="Web UI" width="350"/>
 
 ## Team & Contribution
 
