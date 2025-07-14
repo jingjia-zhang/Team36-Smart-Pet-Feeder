@@ -1,166 +1,61 @@
 # Smart Pet Feeder based on Raspberry Pi 5B 
 
-\---------------------------------------------------------------------------------------------------------------------------------
+## Project Overview
  
- Our real-time Embedded system code is 88% developed in C++. 
- 
- Our motto is, " Making Inexpensive , Safe and Smart Pet Feeder Products for Customers. " 
+ This project is a **real-time embedded system** for a smart pet feeder, built on the Raspberry Pi 5B platform and developed primarily in C++. The system aims to provide **inexpensive, safe, and intelligent feeding solutions for pets**, allowing remote feeding, interaction, and health monitoring via an easy-to-use web interface. The design integrates hardware modules (motors, sensors, camera), real-time control software, and web technologies, showcasing the application of embedded programming in IoT and smart home scenarios.
 
-## Document Introduction
-####  1. The Link to our Instagram
-- The Social Media Link
-#### 2. The Project Introduction
-#### 3. Functions of Our Automatic Pet Feeder
-- Project Objectives
-- Technical Realization
-#### 4. The Circuit Diagram Introduction and Description of Core Functions of Each Module
-#### 5. Component Introduction 
-#### 6. Web Page for Remote Control and Status Display
-- The Picture of Our Web Page
-#### 7. Repository Structure
-#### 8. Operating Principle
-#### 9. Team Member Introduction & Task Allocation
-#### 10. License
+## Key Features
 
+- **Automated Feeding**: Dispenses pet food and water at scheduled times or via remote control.
+- **Remote Monitoring and Control**: Web-based UI allows users to monitor device status and manually trigger feeding from anywhere.
+- **Sensing and Feedback**: Integrates weight, IR, and environmental sensors for real-time status and safety monitoring.
+- **Video Streaming**: Onboard camera module enables live video feed to check on pets remotely.
+- **Real-time Embedded Control**: Deterministic task scheduling for sensor polling, actuator control, and event response.
 
-\---------------------------------------------------------------------------------------------------------------------------------
-
-### 1. **The Social Media Link** 
-
-Please watch our demonstration video here: https://www.instagram.com/p/DIn8_9MM1OK/?utm_source=qr
-
-![b8654549c2ea8379312fa44fedd8a92](https://github.com/user-attachments/assets/f7985afb-f975-4c9c-8b28-0a059acd0d07)
-
-### 2. **The Project Introduction** 
-
-With the accelerated pace of modern life, many pet owners are unable to ensure that their pets eat and drink on time due to busy work schedules or short-term trips. To improve the quality of life of pets, some smart feeding devices have appeared on the market, but most of them have a single function and are difficult to meet individual needs. The aim of this project is to develop a Raspberry Pi 5B-based smart pet feeder that integrates automatic feeding, automatic water feeding, pet sensing, camera visualization and voice dialogue, allowing pet owners to remotely manage their pets' diet and health even when they are not at home. 
-
- 
-
-### 3. **Functions of Our Smart pet feeder** 
-
-- #### Project Objectives 
-
-1.Remote automated feeding: ensure pets eat and drink on time through a timed feeding mechanism or remote control and support intelligent adjustment of feeding schedules. 
-
-2.Enhance pet interaction experience:  Integrated camera and voice interaction functions allow owners to check the status of their pets at any time and communicate remotely by voice to improve the sense of companionship. 
-
-3.Intelligent Sensing &amp; Optimized Feeding:  Uses infrared/ultrasonic sensors to detect if the pet is within the feeding area to prevent food waste and optimize feeding strategies. 
-
-4.Data management and health monitoring: Record pet's eating time, intake and other data to provide owner with more scientific feeding suggestions. 
-
-5.Convenient remote control: Support web access, remote video viewing, manual feeding, data analysis and other functions, so that pet feeding is more intelligent. 
-
-- #### Technical Realization
-
-Embedded platform: adopts Raspberry Pi 5B as the core processing unit, supporting multi-thread processing to improve system response speed. 
-
-Sensor system: Infrared/ultrasonic sensors are used to detect the proximity of pets and combined with weight sensors to monitor the remaining amount of food and water. 
-
-IoT technology: Based on MQTT or WebSocket, real-time communication between devices and the cloud, supporting remote control and data synchronization. 
-
-Camera and Remote Video: Integrated HD camera supports video streaming transmission, allowing owners to check the status of their pets at any time. 
-
-Voice Interaction System: Embedded with AI voice module, it supports voice synthesis and command recognition to achieve remote voice communication. 
-
-This project is dedicated to creating a pet feeder with comprehensive functions and a high degree of intelligence to help pet owners efficiently manage their pets' diets and improve their pets' quality of life. 
-
- 
-
- 
-
- 
-
-### 4. **Design and Implementation of Our Smart Pet Feeder Using Raspberry Pi** 
-
-The Altium Designer project can be found in the folder Circuit Schematic. 
+## System Architecture
 
 ![image](https://github.com/user-attachments/assets/a5740e59-f767-4d95-acde-e5efa4959d23)
 
+Raspberry Pi 5B 
 
-This schematic represents a Smart Pet Feeder System based on the Raspberry Pi 5 platform. The design integrates multiple functional modules to enable automated and intelligent management of pet feeding routines. The system adopts a modular architecture, facilitating scalability and maintenance. Its core functionalities are described as follows: 
+├─ Motor Driver (Feeder, Water Pump)
 
-#### 1. Main Control Unit – Raspberry Pi 5 (U1) 
+├─ Weight Sensor Module
 
-The Raspberry Pi 5 serves as the central processing unit, responsible for data handling, control logic execution, and coordination among peripheral modules. It communicates with external devices via multiple GPIO pins to perform tasks such as timed feeding, sensor monitoring, and voice output. 
+├─ IR Sensor (Food/Water Detection)
 
-#### 2. Infrared Sensor Module (U2) 
+├─ Camera Module (Video Stream)
 
-This module detects the presence of a pet near the feeder. It outputs a digital HIGH/LOW signal through the OUT pin to GPIO22 on the Raspberry Pi, providing real-time proximity detection. The output signal can trigger feeding or voice notification procedures. 
+└─ Web Server (Remote Control UI)
 
-#### 3. Water Pump Control Module (U5) 
+- **Main Control**: C++ application running on Raspberry Pi, handles sensor polling, actuator control, safety checks, and data transmission.
+- **Web Frontend**: Simple control panel for users to view status and operate the feeder remotely.
+- **Modular Hardware Design**: All key components are modular and easy to extend.
 
-The LR7843 driver chip controls a miniature water pump. PWM signals from GPIO26 are used to turn the pump on or off, enabling automatic water dispensing. The load and control signals are electrically isolated to enhance system stability and noise immunity. 
+## Hardware Requirements
 
-#### 4. Servo Control Module (U3) 
+- Raspberry Pi 5B
+- Motor driver (for dry food dispenser & water pump)
+- Weight sensor module (HX711)
+- IR obstacle sensors (food, water presence detection)
+- Pi Camera Module (for live video)
+- External power supply for actuators
 
-This module operates mechanical gates or rotating components to dispense food in precise quantities. The servo receives PWM control signals via the SIG pin connected to GPIO17, enabling accurate actuation of food dispensing mechanisms. 
+## Project Structure
 
-#### 5. Weighing Module – HX711 (M1) 
+├─ src/ # Core C++ source code
 
-This module measures the weight of food in the bowl to determine if replenishment is needed. The HX711 is a 24-bit high-precision ADC that communicates with the Raspberry Pi via DT (GPIO24) and SCK (GPIO25) pins, ensuring accurate and real-time weight data acquisition. 
+├─ include/ # Header files
 
-#### 6. Voice Interaction Module – SU-03T (U13) 
+├─ web/ # Web UI files
 
-This module supports voice playback functions, providing system status updates, user interaction, or pet-friendly prompts. It communicates via serial signals connected to GPIO12 and supports speaker outputs (SPK+/-), enabling customized audio playback. 
+├─ libhv-1.3.3/ # Third-party networking library
 
- 
+├─ LICENSE
 
-The system runs custom control software on an embedded Linux platform, integrating feeding, hydration, detection, and voice functions. It features intelligent sensing, active response, and remote expansion capabilities, making it well-suited for modern smart pet care applications. 
+└─ README.md
 
-
-
-### 5. Component Introduction
-
-#### 1. Main Controller
-
-- **Raspberry Pi 5B** 
-
-  ![image](https://github.com/user-attachments/assets/8391e5c1-71b5-4f02-b63f-dea7aff676ee)
-
-#### 2. Sensors & Modules
-
-- **Infrared sensor ×1**
-
-  ![f30df0e18c183e1698f7bc9c0960bd2](https://github.com/user-attachments/assets/e5f10256-509d-42df-a6e6-e7677dd97fb1)
-
-- **Load cell with HX711 module ×1**
-
-  ![7b18a948369ae4907e2354afa1dc9f1](https://github.com/user-attachments/assets/0a36d36b-6a27-4890-a000-0958b54f400e)
-
-- **Camera module ×1**
-
-  ![5d37d4e8bc5ede85e4603ac3d32e43f](https://github.com/user-attachments/assets/57b6393a-3fc3-4ea3-a63a-53e16c30bce2)
-
-- **Water pump ×1**
-
-  ![cb95196e7711e2ee8bec04b675bc5a1](https://github.com/user-attachments/assets/9e378500-ca54-4691-b148-17a60a9af517)
-
-
-- **Servo motor SG90 ×1**
-
-  ![151d789f5a284a76aeb17477e7be648](https://github.com/user-attachments/assets/64e7ebc7-deb1-4cfb-b001-c8f5e07263b2)
-
-- **Voice module SU-03T ×1**
-
-  ![2c72e6d1f41c826a3636111453e05af](https://github.com/user-attachments/assets/822d5844-1415-48a4-92da-38263ff61717)
-
-- **Several Dupont wires**
-
-  ![9be274519104183d3cd9c4a5afa6786](https://github.com/user-attachments/assets/14596334-7731-4725-a1cd-f91db53cd1ba)
-
-### 6. Web Page for Remote Control and Status Display
-
-- **The Picture of Our Web Page**
-
-  ![df3575f7e980e73728eeedf582265e5](https://github.com/user-attachments/assets/f499831f-282b-45f2-bfeb-8169adc42f07)
-
-### 7. Repository Structure
-
-![image](https://github.com/user-attachments/assets/672bff98-1d38-463d-907b-e89a8d9f7ed4)
-
-### 8. Operating Principle
-
+## Operating Principle
 1. System Power On
    
    Device is powered up (battery or power supply).
@@ -218,39 +113,67 @@ The system runs custom control software on an embedded Linux platform, integrati
 
 10. Log + Upload Feeding Event
 
-   Record: Timestamp; Pet presence; Snapshot; Feeding status (success/fail)
+    Record: Timestamp; Pet presence; Snapshot; Feeding status (success/fail)
 
-   Upload to server: Cloud dashboard; Push notification
+    Upload to server: Cloud dashboard; Push notification
    
 11. Return to Loop
 
-   Short wait or idle state
+    Short wait or idle state
 
-   Go back to IR detection
+    Go back to IR detection
 
-### 9. Team Member Introduction & Task Allocation
+## Main Modules
 
-- Jingjia Zhang (2944713Z)
+- **main.cpp**: System entry point and global initialization. Initializes all subsystems, manages the main event loop and operational modes.
+- **Core/AutoMode.cpp**: Implements autonomous feeding logic based on schedule and sensor data.
+- **Core/RemoteMode.cpp**: Handles remote commands and manual operation from the web interface.
+- **Core/StateManager.cpp**: Manages device state, transitions, and provides status information to other modules.
+- **Communication/WebSocketClient.cpp**: Real-time WebSocket communication for remote control and monitoring.
+- **Data/Database.cpp**: Persistent storage for feeding events, logs, and device settings.
+- **Data/DataApi.cpp**: Data access abstraction, unifies queries and data operations.
+- **Hardware/ServoMotor.cpp**: Controls the feeder's servo motor.
+- **Hardware/WaterPump.cpp**: Controls the water dispensing module.
+- **Hardware/WeightSensor.cpp**: Reads and processes food/water weight measurements.
+- **Hardware/GPIOChip.cpp**: Abstracts GPIO operations (sensors, actuators, indicators).
+- **Hardware/CameraModule.cpp**: Handles camera operations and video streaming.
 
-  Project Development. Responsible for Raspberry Pi control code with sensors, motors, pumps, voice modules and other hardware.
+## Highlights & Technical Challenges
+
+- **Real-Time Response**: Achieved via polling and prioritized event handling, ensuring timely actuator and safety actions.
+- **Concurrency**: Utilizes multithreading (std::thread, mutex) for parallel processing of sensors, actuators, and web server.
+- **Fault Tolerance**: Built-in error detection for sensor failure, food/water blockages, and system recovery.
+- **Modularity**: Hardware abstraction allows for easy component replacement or system expansion.
+
+## Demo
+
+- https://www.instagram.com/p/DIn8_9MM1OK/?utm_source=qr
+
+- <img src="https://github.com/user-attachments/assets/56eea94b-a509-4db9-9c5a-6ab82ff19774" alt="Web UI" width="350"/>
+
+## Team & Contribution
+
+- **Hongji Zhang (2961176Z)**:
+
+  Tasked with establishing the overall system framework. Responsible for GPIO hardware abstraction, providing unified and safe control of all sensor and actuator interfaces.
+
+- **Jingjia Zhang (2944713Z)**:
+
+  Responsible for water pump control, camera integration and streaming module, and remote/manual operation mode.
   
-- Runze Zhang (2960782Z)
+- **Runze Zhang (2960782Z)**:
 
-  Project Development. Responsible for Raspberry Pi control code with sensors, motors, pumps, voice modules and other hardware.
+  Designed and implemented the servo motor control logic for food dispensing, and developed the autonomous feeding mode.
   
-- Hongji Zhang (2961176Z)
+- **Minghao Jiang (2961294J)**:
 
-  Project Development. Responsible for Raspberry Pi control code with sensors, motors, pumps, voice modules and other hardware.
+  Developed the weight sensing and measurement module for food/water detection, and managed the system state logic and transitions.
   
-- Minghao Jiang (2961294J)
+- **Hongzhan Li (2962160L)**:
 
-  Hardware Engineering (PCB Design). Design PCB schematics and board layouts to integrate Raspberry Pi interfaces, sensor wiring, power management, and module packaging.
-  
-- Hongzhan Li (2962160L)
+  Developed the WebSocket communication module for real-time remote control and data synchronization. Implemented the data API layer and local database management for persistent data storage and query operations.
 
-  Project Maintenance and Problem Handling. Responsible for testing and debugging, locating and fixing bugs, and coordinating with other team members to solve problems.
-
-### 10. License
+## License
 
 MIT License
 
