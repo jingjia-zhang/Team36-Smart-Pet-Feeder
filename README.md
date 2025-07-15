@@ -140,6 +140,46 @@ Raspberry Pi 5B
 
 <img src="https://github.com/user-attachments/assets/56eea94b-a509-4db9-9c5a-6ab82ff19774" alt="Web UI" width="350"/>
 
+## Build Instructions
+
+This project uses **CMake** to compile the C++17-based smart pet feeder system, targeting Raspberry Pi or other Linux platforms.
+
+### Requirements
+
+Install the following dependencies:
+
+```bash
+sudo apt update
+sudo apt install cmake g++ git libgpiod-dev libsqlite3-dev libopencv-dev
+```
+
+> Note: Ensure that `WebSocket++` and `nlohmann_json` are available on your system. You may install them via package manager or from source if not found.
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/jingjia-zhang/Team36-Smart-Pet-Feeder.git
+cd Team36-Smart-Pet-Feeder
+```
+
+### Build the Project
+
+```bash
+mkdir build && cd build
+cmake ..
+make
+```
+
+This will generate the `pet_feeder` executable in the `build/` directory.
+
+### Run
+
+```bash
+sudo ./pet_feeder
+```
+
+> Use `sudo` if the application accesses GPIO or camera devices.
+
 ## Team & Contribution
 
 - **Hongji Zhang (2961176Z)**:
