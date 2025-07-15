@@ -1,15 +1,23 @@
 #pragma once
-#include <functional>
-#include <string>
-#include <unordered_map>
+#include "Hardware/GPIOChip.hpp"
+#include <memory>
+#include <chrono>
 
-class RemoteMode {
+class IServoMotor {
 public:
-    using CommandHandler = std::function<void(const std::string&)>;
-    
-    void registerCommand(const std::string& cmd, CommandHandler handler);
-    void handleMessage(const std::string& message);
-    
+    virtual void setAngle(int angle) = 0; // 0-180 degrees
+    virtual ~IServoMotor() = default;
+};
+
+class ServoMotor : public IServoMotor {
+public:
+    ServoMotor(std::shared_ptr<GPIOChip> gpio, int pin);
+    void setAngle(int angle) override;
+
 private:
-    std::unordered_map<std::string, CommandHandler> commandHandlers_;
+    std::shared_ptr<GPIOChip> gpio_;
+    int pin_;
+    int currentAngle_;
+
+    void generatePulse(int widthUs);
 };
