@@ -5,10 +5,10 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# 添加 SQLiteCpp
+# Add SQLiteCpp
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/SQLiteCpp)
 
-# 添加可执行文件
+# Add executable file
 add_executable(server
         ${CMAKE_SOURCE_DIR}/src/main.cpp
         ${CMAKE_SOURCE_DIR}/src/Server.cpp
@@ -16,7 +16,7 @@ add_executable(server
         ${CMAKE_SOURCE_DIR}/src/FrontendCommandHandler.cpp
 )
 
-# 公共头文件路径
+# Public header file path
 target_include_directories(server PRIVATE
         ${CMAKE_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/lib/websocketpp
@@ -25,7 +25,7 @@ target_include_directories(server PRIVATE
 )
 
 if(WIN32)
-    # Windows 下手动指定 Boost 路径
+    # Windows Manually specify Boost path
     set(BOOST_ROOT "D:/local/boost_1_69_0")
     set(BOOST_INCLUDE_DIR "${BOOST_ROOT}")
     set(BOOST_LIB_DIR "${BOOST_ROOT}/stage/lib")
@@ -41,7 +41,7 @@ if(WIN32)
             Mswsock
     )
 else()
-    # Linux/树莓派 用 find_package 查找 Boost
+    # Linux/Raspberry Pi Use find_package such Boost
     find_package(Boost 1.69 REQUIRED COMPONENTS system thread)
 
     if(Boost_FOUND)
@@ -52,7 +52,7 @@ else()
         message(FATAL_ERROR "Boost not found!")
     endif()
 
-    # 额外链接库（Linux 通常不需要 ws2_32 和 Mswsock）
+    # Additional link library（Linux not usually necessary ws2_32 和 Mswsock）
 endif()
 
 install(TARGETS server DESTINATION bin)
