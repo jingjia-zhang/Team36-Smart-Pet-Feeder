@@ -1,5 +1,7 @@
 #include "FrontendCommandHandler.hpp"
 
+#include <Server.hpp>
+
 bool FrontendCommandHandler::canHandle(const json& data) const {
     // Handle messages containing command field
     return data.contains("command");

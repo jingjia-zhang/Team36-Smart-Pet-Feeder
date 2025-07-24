@@ -1,5 +1,7 @@
 #include "DeviceMessageHandler.hpp"
 
+#include <Server.hpp>
+
 bool DeviceMessageHandler::canHandle(const json& data) const {
     // Handle messages containing device-specific fields
     return data.contains("device_id") ||
